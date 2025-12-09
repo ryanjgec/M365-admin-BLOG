@@ -1,3 +1,4 @@
+
 export interface Article {
   id: string;
   title: string;
@@ -11,6 +12,7 @@ export interface Article {
   views: number;
   publishedDate: string;
   coverImage?: string;
+  series?: string; // New field for Series clustering
 }
 
 export interface Script {

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { 
   Terminal, 
@@ -221,11 +222,11 @@ export const About: React.FC = () => {
         </p>
 
         <a 
-          href="mailto:contact@microsoftadmin.in" 
+          href="mailto:sayan@microsoftadmin.in" 
           className="inline-flex items-center text-xl md:text-2xl font-bold text-navy-900 dark:text-white hover:text-neon-dark dark:hover:text-neon-green transition-all duration-300 group mb-8"
         >
           <Mail className="mr-3 group-hover:scale-110 transition-transform" />
-          contact@microsoftadmin.in
+          sayan@microsoftadmin.in
         </a>
 
         <div className="flex justify-center gap-6">

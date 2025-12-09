@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Search, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, Filter, ChevronLeft, ChevronRight, Layers } from 'lucide-react';
 import { ArticleCard } from '../components/UI';
 import { ARTICLES, CATEGORIES } from '../data';
 import { SEO } from '../components/Layout';
@@ -13,6 +13,17 @@ export const KnowledgeBase: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [currentPage, setCurrentPage] = useState(1);
+
+  // Extract Series
+  const seriesList = useMemo(() => {
+      const allSeries = ARTICLES.filter(a => a.series).reduce((acc, curr) => {
+          if (!acc.some(s => s.series === curr.series)) {
+              acc.push(curr);
+          }
+          return acc;
+      }, [] as typeof ARTICLES);
+      return allSeries.slice(0, 3); // Top 3 series
+  }, []);
 
   const filteredArticles = useMemo(() => {
     return ARTICLES.filter(article => {
@@ -52,6 +63,32 @@ export const KnowledgeBase: React.FC = () => {
         <h1 className="text-4xl font-bold mb-4 text-navy-900 dark:text-white">Knowledge Base</h1>
         <p className="text-gray-600 dark:text-gray-400 text-lg">Explore technical guides and best practices for Microsoft 365.</p>
       </div>
+
+      {/* Series Row - "AdminDroid Style" */}
+      {seriesList.length > 0 && selectedCategory === 'All' && !searchTerm && (
+          <div className="mb-12">
+              <h2 className="text-sm font-bold uppercase tracking-wider text-gray-500 mb-4 flex items-center gap-2">
+                  <Layers size={16} className="text-indigo-500" /> Featured Series
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {seriesList.map((item, idx) => (
+                      <div key={idx} className="bg-indigo-50 dark:bg-indigo-900/10 border border-indigo-100 dark:border-indigo-500/20 p-5 rounded-lg flex flex-col justify-between hover:bg-indigo-100 dark:hover:bg-indigo-900/20 transition-colors">
+                          <div>
+                              <span className="text-[10px] font-bold text-indigo-500 uppercase tracking-widest mb-2 block">Series</span>
+                              <h3 className="font-bold text-navy-900 dark:text-white text-lg mb-2">{item.series}</h3>
+                              <p className="text-xs text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">In-depth coverage on {item.category} topics.</p>
+                          </div>
+                          <button 
+                            onClick={() => setSearchTerm(item.series || '')}
+                            className="text-xs font-bold text-indigo-600 dark:text-indigo-400 flex items-center hover:underline"
+                          >
+                              View Series <ChevronRight size={12} />
+                          </button>
+                      </div>
+                  ))}
+              </div>
+          </div>
+      )}
 
       {/* Search and Filter Bar - Non-sticky, Compact */}
       <div className="glass-panel p-4 md:p-6 rounded-2xl mb-12 flex flex-col gap-6 shadow-xl border border-white/20 dark:border-white/5">
@@ -109,7 +146,7 @@ export const KnowledgeBase: React.FC = () => {
       </div>
 
       {/* Articles Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+      <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6 mb-12">
         {paginatedArticles.map(article => (
           <ArticleCard key={article.id} article={article} />
         ))}

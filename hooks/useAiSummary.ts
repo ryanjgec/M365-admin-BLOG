@@ -3,30 +3,45 @@ import { GoogleGenAI } from "@google/genai";
 
 const CACHE_PREFIX = 'm365_ai_summary_v1_';
 
-export const useAiSummary = (content: string, id: string, initialFallback: string = '') => {
-  const [summary, setSummary] = useState<string>(() => {
-    // 1. Try to load from local storage first
+const isValidSummary = (text: string | null | undefined): boolean => {
+  if (!text) return false;
+  if (text.length < 10) return false;
+  const lower = text.toLowerCase();
+  return !lower.includes('please provide') && !lower.includes('tbd') && !lower.includes('coming soon');
+};
+
+const getFallback = (content: string, excerpt: string): string => {
+  if (isValidSummary(excerpt)) return excerpt;
+  // Fallback to content: strip basic markdown headers and take first 140 chars
+  const cleanContent = content.replace(/#{1,6}\s/g, '').replace(/\n/g, ' ').substring(0, 140).trim();
+  return cleanContent + (cleanContent.length > 0 ? '...' : '');
+};
+
+export const useAiSummary = (content: string, id: string, initialExcerpt: string = '') => {
+  // Determine initial state
+  const getInitialState = () => {
+    // 1. Try cache
     try {
-        const cached = localStorage.getItem(CACHE_PREFIX + id);
-        return cached || initialFallback;
+      const cached = localStorage.getItem(CACHE_PREFIX + id);
+      if (isValidSummary(cached)) {
+        return { text: cached!, isAi: true };
+      }
     } catch (e) {
-        return initialFallback;
+      // ignore
     }
-  });
-  
-  const [isAiGenerated, setIsAiGenerated] = useState(() => {
-      return !!localStorage.getItem(CACHE_PREFIX + id);
-  });
+
+    // 2. Fallback
+    return { 
+      text: getFallback(content, initialExcerpt), 
+      isAi: false 
+    };
+  };
+
+  const [state, setState] = useState(getInitialState);
 
   useEffect(() => {
-    // If we already have a cached version (and it's not just the initial fallback passed in state), skip
-    if (localStorage.getItem(CACHE_PREFIX + id)) {
-        setIsAiGenerated(true);
-        return;
-    }
-
-    // If no API key is available, we cannot generate. Stick to fallback.
-    if (!process.env.API_KEY) return;
+    // If we already have a valid AI summary, or if no API key, stop.
+    if (state.isAi || !process.env.API_KEY) return;
 
     let isMounted = true;
 
@@ -34,12 +49,9 @@ export const useAiSummary = (content: string, id: string, initialFallback: strin
       try {
         const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
         
-        // Use gemini-2.5-flash for speed and efficiency
         const response = await ai.models.generateContent({
             model: 'gemini-2.5-flash',
-            contents: `Task: Summarize the following technical text into 1 or 2 clear, concise sentences. 
-            Constraints: Maximum 140 characters. Plain text only. No intro/outro.
-            Text to summarize: ${content.substring(0, 2000)}`,
+            contents: `Summarize this technical text in 1-2 clear sentences (max 140 chars). No intro. Text: ${content.substring(0, 2000)}`,
             config: {
                 maxOutputTokens: 60,
                 temperature: 0.3,
@@ -49,21 +61,21 @@ export const useAiSummary = (content: string, id: string, initialFallback: strin
         const text = response.text;
         if (text && isMounted) {
             const cleanText = text.trim();
-            setSummary(cleanText);
-            setIsAiGenerated(true);
-            try {
-                localStorage.setItem(CACHE_PREFIX + id, cleanText);
-            } catch (e) {
-                // Ignore storage quota errors
+            if (isValidSummary(cleanText)) {
+                setState({ text: cleanText, isAi: true });
+                try {
+                    localStorage.setItem(CACHE_PREFIX + id, cleanText);
+                } catch (e) {
+                    // Ignore storage quota
+                }
             }
         }
       } catch (error) {
-        // Silently fail and stick to fallback if API error occurs
-        // console.debug('Summarizer skipped for', id);
+        // Silently fail, sticking to the fallback already in state
       }
     };
 
-    // Add a random delay between 500ms and 3000ms to avoid rate limiting when mounting a list
+    // Random delay to prevent rate limiting bursts
     const delay = Math.floor(Math.random() * 2500) + 500;
     const timeoutId = setTimeout(generateSummary, delay);
 
@@ -71,7 +83,7 @@ export const useAiSummary = (content: string, id: string, initialFallback: strin
         isMounted = false;
         clearTimeout(timeoutId);
     };
-  }, [content, id, process.env.API_KEY]);
+  }, [content, id, state.isAi]);
 
-  return { summary, isAiGenerated };
+  return { summary: state.text, isAiGenerated: state.isAi };
 };

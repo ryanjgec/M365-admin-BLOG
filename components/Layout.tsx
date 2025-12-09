@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from 'react';
+
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Moon, Sun, ArrowUp, ExternalLink } from 'lucide-react';
+import { Menu, X, Moon, Sun, ArrowUp, ExternalLink, ChevronDown } from 'lucide-react';
 import { ChatBot } from './ChatBot';
+import { CATEGORIES } from '../data';
 
 export const Header: React.FC<{ theme: string; toggleTheme: () => void }> = ({ theme, toggleTheme }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isTopicsOpen, setIsTopicsOpen] = useState(false);
   const location = useLocation();
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -14,11 +18,27 @@ export const Header: React.FC<{ theme: string; toggleTheme: () => void }> = ({ t
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsTopicsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Close dropdown on route change
+  useEffect(() => {
+    setIsTopicsOpen(false);
+    setIsMobileOpen(false);
+  }, [location.pathname]);
+
   const navLinks = [
     { name: 'Knowledge Base', path: '/articles' },
     { name: 'Scripts', path: '/scripts' },
     { name: 'Troubleshooting', path: '/troubleshooting' },
-    { name: 'News', path: '/news' },
     { name: 'About', path: '/about' },
   ];
 
@@ -35,6 +55,33 @@ export const Header: React.FC<{ theme: string; toggleTheme: () => void }> = ({ t
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center space-x-8">
+          
+          {/* Topics Dropdown */}
+          <div className="relative" ref={dropdownRef}>
+            <button 
+              onClick={() => setIsTopicsOpen(!isTopicsOpen)}
+              className={`nav-link text-sm font-medium transition-colors flex items-center gap-1 ${
+                isTopicsOpen ? 'text-neon-dark dark:text-neon-green' : 'text-gray-600 dark:text-gray-300 hover:text-neon-dark dark:hover:text-neon-green'
+              }`}
+            >
+              Topics <ChevronDown size={14} className={`transition-transform duration-200 ${isTopicsOpen ? 'rotate-180' : ''}`} />
+            </button>
+            
+            {isTopicsOpen && (
+              <div className="absolute top-full left-0 mt-4 w-64 bg-white/95 dark:bg-navy-900/95 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-xl shadow-2xl p-2 animate-fade-in flex flex-col gap-1 z-50">
+                {CATEGORIES.slice(0, 8).map((cat) => (
+                  <Link 
+                    key={cat.id} 
+                    to={`/articles?category=${encodeURIComponent(cat.name)}`}
+                    className="block px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-neon-green/10 hover:text-neon-dark dark:hover:text-neon-green rounded-lg transition-colors"
+                  >
+                    {cat.name}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
           {navLinks.map((link) => (
             <Link
               key={link.path}
@@ -78,17 +125,34 @@ export const Header: React.FC<{ theme: string; toggleTheme: () => void }> = ({ t
 
       {/* Mobile Menu */}
       {isMobileOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-white/95 dark:bg-navy-900/95 backdrop-blur-xl border-b border-black/10 dark:border-white/10 p-6 flex flex-col space-y-6 shadow-xl animate-fade-in h-screen">
-          {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              onClick={() => setIsMobileOpen(false)}
-              className="text-xl font-medium text-gray-800 dark:text-gray-300 hover:text-neon-dark dark:hover:text-neon-green flex items-center justify-between border-b border-gray-100 dark:border-white/5 pb-2"
-            >
-              {link.name}
-            </Link>
-          ))}
+        <div className="md:hidden absolute top-full left-0 w-full bg-white/95 dark:bg-navy-900/95 backdrop-blur-xl border-b border-black/10 dark:border-white/10 p-6 flex flex-col space-y-6 shadow-xl animate-fade-in h-screen overflow-y-auto">
+          <div className="space-y-4">
+            <div className="text-xs font-bold uppercase text-gray-500 tracking-wider">Topics</div>
+            {CATEGORIES.slice(0, 8).map((cat) => (
+               <Link
+                key={cat.id}
+                to={`/articles?category=${encodeURIComponent(cat.name)}`}
+                onClick={() => setIsMobileOpen(false)}
+                className="block text-lg font-medium text-gray-800 dark:text-gray-300 hover:text-neon-dark dark:hover:text-neon-green"
+              >
+                {cat.name}
+              </Link>
+            ))}
+          </div>
+          
+          <div className="border-t border-gray-200 dark:border-white/10 pt-4 space-y-4">
+             <div className="text-xs font-bold uppercase text-gray-500 tracking-wider">Resources</div>
+             {navLinks.map((link) => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  onClick={() => setIsMobileOpen(false)}
+                  className="block text-lg font-medium text-gray-800 dark:text-gray-300 hover:text-neon-dark dark:hover:text-neon-green"
+                >
+                  {link.name}
+                </Link>
+              ))}
+          </div>
         </div>
       )}
     </header>
@@ -173,6 +237,7 @@ export const Footer: React.FC = () => {
                      <ul className="space-y-1 text-sm leading-tight mb-4">
                         <li><Link to="/about" className="text-gray-600 dark:text-gray-400 hover:text-neon-dark dark:hover:text-neon-green transition-colors block py-0.5">About & Contact</Link></li>
                         <li><Link to="/sitemap" className="text-gray-600 dark:text-gray-400 hover:text-neon-dark dark:hover:text-neon-green transition-colors block py-0.5">Full Sitemap</Link></li>
+                        <li><a href="mailto:sayan@microsoftadmin.in" className="text-gray-600 dark:text-gray-400 hover:text-neon-dark dark:hover:text-neon-green transition-colors block py-0.5">Email Us</a></li>
                      </ul>
 
                      <h4 className="text-lg font-semibold tracking-tight mb-2 text-neon-dark dark:text-neon-green">Social</h4>

@@ -1,11 +1,12 @@
-import React from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   ArrowRight, Download, Eye, Calendar, Clock, 
   Shield, Mail, Users, Smartphone, Lock, FileText, Terminal, BarChart,
   BookOpen, HelpCircle, AlertTriangle, Lightbulb, ArrowLeftRight, Target, Book,
   Fingerprint, Cloud, PlayCircle, Sparkles,
-  Share2, Linkedin, Twitter, Link as LinkIcon
+  Share2, Linkedin, Twitter, Link as LinkIcon, List
 } from 'lucide-react';
 import { Article, Script, Category } from '../types';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -78,6 +79,16 @@ export const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {
             <Badge text={article.category} color="bg-blue-50 dark:bg-neon-blue/10 text-neon-dark dark:text-neon-blue" />
           </div>
         )}
+        
+        {/* Series Badge */}
+        {article.series && (
+            <div className="mb-2">
+                <span className="inline-flex items-center text-[10px] font-bold uppercase tracking-wide text-indigo-500 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 px-2 py-0.5 rounded border border-indigo-100 dark:border-indigo-500/20">
+                    <List size={10} className="mr-1" /> {article.series}
+                </span>
+            </div>
+        )}
+
         <div className="mb-3">
            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 flex items-center">
             <Clock size={10} className="mr-1" /> {article.readTime} min read
@@ -91,7 +102,7 @@ export const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {
           </Link>
         </h3>
         
-        {/* AI Summary Block */}
+        {/* Summary Block */}
         <div className="relative mb-6 flex-grow">
           <div className={`pl-3 border-l-2 ${isAiGenerated ? 'border-neon-dark dark:border-neon-green' : 'border-gray-300 dark:border-white/20'} transition-colors duration-500`}>
             {isAiGenerated && (
@@ -99,7 +110,7 @@ export const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {
                     <Sparkles size={10} /> AI Summary
                 </div>
             )}
-            <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-3 leading-relaxed">
+            <p className="mt-2 text-xs md:text-sm text-gray-600 dark:text-gray-300 line-clamp-2 leading-relaxed">
               {summary}
             </p>
           </div>
@@ -185,14 +196,14 @@ export const ScriptCard: React.FC<{ script: Script; onView: (s: Script) => void 
         </div>
         <h3 className="text-lg font-bold text-navy-900 dark:text-white mb-2 line-clamp-1" title={script.title}>{script.title}</h3>
         
-        {/* AI Summary for Script */}
+        {/* Summary Block */}
         <div className="mb-4 flex-grow relative">
              {isAiGenerated && (
                 <div className="flex items-center gap-1 text-[9px] font-bold text-neon-dark dark:text-neon-green mb-1 uppercase tracking-wider opacity-70">
                     <Sparkles size={9} /> AI Summary
                 </div>
             )}
-            <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-2">
+            <p className="mt-2 text-xs md:text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
                 {summary}
             </p>
         </div>
@@ -333,4 +344,98 @@ export const SocialShare: React.FC<{ title: string; url?: string }> = ({ title, 
             </button>
         </div>
     );
+};
+
+export const AnimatedTerminal: React.FC = () => {
+  const commands = [
+    'Connect-MgGraph -Scopes "User.Read.All","AuditLog.Read.All"',
+    'Get-MgUser -Filter "AccountEnabled eq true" -All | Select UserPrincipalName',
+    'Get-MessageTrace -SenderAddress "user@contoso.com" -StartDate (Get-Date).AddDays(-1)',
+    'Get-IntuneManagedDevice | Where-Object { $_.ComplianceState -ne "compliant" }'
+  ];
+
+  const [currentCommandIndex, setCurrentCommandIndex] = useState(0);
+  const [displayedText, setDisplayedText] = useState('');
+  const [isTyping, setIsTyping] = useState(true);
+  const [showCursor, setShowCursor] = useState(true);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mediaQuery.matches);
+    const handler = () => setPrefersReducedMotion(mediaQuery.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
+
+  // Cursor blink
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+    const interval = setInterval(() => setShowCursor(c => !c), 500);
+    return () => clearInterval(interval);
+  }, [prefersReducedMotion]);
+
+  // Typing logic
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    const targetText = commands[currentCommandIndex];
+    let typingTimeout: ReturnType<typeof setTimeout>;
+
+    if (isTyping) {
+      if (displayedText.length < targetText.length) {
+        typingTimeout = setTimeout(() => {
+          setDisplayedText(targetText.slice(0, displayedText.length + 1));
+        }, 30 + Math.random() * 40); // Random typing speed
+      } else {
+        // Finished typing, wait before clearing
+        typingTimeout = setTimeout(() => {
+          setIsTyping(false);
+        }, 2500);
+      }
+    } else {
+      // Clearing text
+      if (displayedText.length > 0) {
+        setDisplayedText(''); // Instant clear like CLS
+        setIsTyping(true);
+        setCurrentCommandIndex((prev) => (prev + 1) % commands.length);
+      }
+    }
+
+    return () => clearTimeout(typingTimeout);
+  }, [displayedText, isTyping, currentCommandIndex, prefersReducedMotion]);
+
+  if (prefersReducedMotion) {
+    return (
+      <div className="relative bg-gray-900 dark:bg-[#0d1117] border border-white/10 rounded-lg p-6 shadow-2xl h-full min-h-[220px]">
+        <div className="flex items-center gap-2 mb-4 border-b border-white/5 pb-4">
+          <Terminal className="text-neon-green w-5 h-5" />
+          <span className="text-sm text-gray-400 font-mono">Administrator: Windows PowerShell</span>
+        </div>
+        <div className="font-mono text-sm space-y-2">
+          <p className="text-gray-400">PS C:\Admin> </p>
+          <p className="text-neon-green">{commands[0]}</p>
+          <p className="text-gray-400">PS C:\Admin> </p>
+          <p className="text-neon-green">{commands[1]}</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative bg-gray-900 dark:bg-[#0d1117] border border-white/10 rounded-lg p-6 shadow-2xl h-full min-h-[220px]">
+      <div className="flex items-center gap-2 mb-4 border-b border-white/5 pb-4">
+        <Terminal className="text-neon-green w-5 h-5" />
+        <span className="text-sm text-gray-400 font-mono">Administrator: Windows PowerShell</span>
+      </div>
+      <div className="font-mono text-sm space-y-2">
+        <p className="text-gray-400">PS C:\Admin> </p>
+        <p className="break-all">
+           <span className="text-blue-400">{displayedText.split(' ')[0]}</span>
+           <span className="text-gray-300"> {displayedText.split(' ').slice(1).join(' ')}</span>
+           <span className={`${showCursor ? 'opacity-100' : 'opacity-0'} text-neon-green`}>▊</span>
+        </p>
+      </div>
+    </div>
+  );
 };

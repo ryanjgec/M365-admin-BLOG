@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 export const Privacy: React.FC = () => {
@@ -80,7 +81,7 @@ export const Privacy: React.FC = () => {
 
           <h3 className="text-xl font-bold text-navy-900 dark:text-white mt-8 mb-4">11. Contact</h3>
           <p>
-            For questions about this Privacy Policy, email: <a href="mailto:sayan.ghosh@outlook.in" className="text-neon-dark dark:text-neon-green hover:underline">sayan.ghosh@outlook.in</a>
+            For questions about this Privacy Policy, email: <a href="mailto:sayan@microsoftadmin.in" className="text-neon-dark dark:text-neon-green hover:underline">sayan@microsoftadmin.in</a>
           </p>
         </div>
       </div>
