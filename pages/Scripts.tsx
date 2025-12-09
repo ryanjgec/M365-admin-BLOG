@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Search, X, Copy, Download, Check, Maximize2 } from 'lucide-react';
 import { SCRIPTS } from '../data';
@@ -12,7 +13,8 @@ export const Scripts: React.FC = () => {
 
   const filteredScripts = SCRIPTS.filter(s => 
     s.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    s.description.toLowerCase().includes(searchTerm.toLowerCase())
+    s.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    s.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleCopy = () => {
@@ -40,7 +42,7 @@ export const Scripts: React.FC = () => {
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5" />
         <input 
           type="text" 
-          placeholder="Search scripts..." 
+          placeholder="Search scripts (e.g. 'Bulk User', 'Teams', 'Report')..." 
           className="w-full md:w-1/2 bg-white dark:bg-navy-900/50 border border-gray-200 dark:border-white/10 rounded-lg pl-10 pr-4 py-3 text-navy-900 dark:text-white focus:outline-none focus:border-neon-green/50 transition-colors shadow-inner"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -48,9 +50,15 @@ export const Scripts: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
-        {filteredScripts.map(script => (
-          <ScriptCard key={script.id} script={script} onView={setSelectedScript} />
-        ))}
+        {filteredScripts.length > 0 ? (
+            filteredScripts.map(script => (
+            <ScriptCard key={script.id} script={script} onView={setSelectedScript} />
+            ))
+        ) : (
+            <div className="col-span-full text-center py-12 text-gray-500">
+                No scripts found matching your search.
+            </div>
+        )}
       </div>
 
       {/* Fullscreen Script Modal */}

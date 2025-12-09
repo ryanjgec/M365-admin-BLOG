@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { GoogleGenAI } from "@google/genai";
 
@@ -55,6 +56,7 @@ export const useAiSummary = (content: string, id: string, initialExcerpt: string
             config: {
                 maxOutputTokens: 60,
                 temperature: 0.3,
+                thinkingConfig: { thinkingBudget: 0 }, // Disable thinking for short summaries when maxOutputTokens is constrained
             }
         });
 

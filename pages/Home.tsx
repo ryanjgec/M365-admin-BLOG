@@ -9,8 +9,11 @@ import { SEO } from '../components/Layout';
 
 export const Home: React.FC = () => {
   const navigate = useNavigate();
-  // Get latest 4 articles
-  const recentArticles = [...ARTICLES].sort((a, b) => new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime()).slice(0, 4);
+  // Get latest 4 articles - Ensure we have dates to sort by, fallback to ID if needed
+  const recentArticles = [...ARTICLES]
+    .sort((a, b) => new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime())
+    .slice(0, 4);
+    
   // Get top 4 scripts by downloads
   const topScripts = [...SCRIPTS].sort((a, b) => b.downloads - a.downloads).slice(0, 4);
 

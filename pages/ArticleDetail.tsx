@@ -1,7 +1,7 @@
 
 import React, { useMemo } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { Clock, ChevronLeft, Tag, List, Calendar, User } from 'lucide-react';
+import { useParams, Link, useLocation } from 'react-router-dom';
+import { Clock, ChevronLeft, Tag, List, Calendar, User, ArrowLeft } from 'lucide-react';
 import { ARTICLES } from '../data';
 import { CodeBlock, Badge, RelatedArticleCard, SocialShare } from '../components/UI';
 import { SEO } from '../components/Layout';
@@ -58,7 +58,11 @@ const TableOfContents: React.FC<{ content: string }> = ({ content }) => {
 
 export const ArticleDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
+  const location = useLocation();
   const article = ARTICLES.find(a => a.slug === slug);
+  
+  // Detect if user came from Troubleshooting page via state or just assume back is valuable
+  const fromTroubleshooting = location.state?.from === 'troubleshooting';
 
   const relatedArticles = useMemo(() => {
     if (!article) return [];
@@ -110,11 +114,13 @@ export const ArticleDetail: React.FC = () => {
   };
 
   const renderContent = (content: string) => {
-    const parts = content.split(/```/);
+    const parts = content.split(/(```[\s\S]*?```)/g);
     return parts.map((part, index) => {
-      if (index % 2 === 1) {
-        const [lang, ...codeLines] = part.split('\n');
-        return <CodeBlock key={index} language={lang.trim() || 'powershell'} code={codeLines.join('\n').trim()} />;
+      if (part.startsWith('```') && part.endsWith('```')) {
+        const match = part.match(/```(\w+)?\n([\s\S]*?)```/);
+        const lang = match ? match[1] : 'powershell';
+        const code = match ? match[2] : part.slice(3, -3);
+        return <CodeBlock key={index} language={lang || 'powershell'} code={code.trim()} />;
       } else {
         return (
           <div key={index} className="prose prose-slate dark:prose-invert max-w-none text-navy-800 dark:text-gray-300">
@@ -175,14 +181,22 @@ export const ArticleDetail: React.FC = () => {
       <div className="container mx-auto px-6">
         <div className="max-w-7xl mx-auto">
           {/* Breadcrumb */}
-          <div className="flex items-center space-x-2 text-sm text-gray-500 mb-8 overflow-x-auto whitespace-nowrap pb-2">
-            <Link to="/" className="hover:text-navy-900 dark:hover:text-white">Home</Link>
-            <ChevronLeft size={12} className="rotate-180 flex-shrink-0" />
-            <Link to="/articles" className="hover:text-navy-900 dark:hover:text-white">Knowledge Base</Link>
-            <ChevronLeft size={12} className="rotate-180 flex-shrink-0" />
-            <Link to={`/articles?category=${encodeURIComponent(article.category)}`} className="hover:text-navy-900 dark:hover:text-white">{article.category}</Link>
-            <ChevronLeft size={12} className="rotate-180 flex-shrink-0" />
-            <span className="text-neon-dark dark:text-neon-green truncate max-w-[200px] font-medium">{article.title}</span>
+          <div className="flex flex-col gap-2 mb-8">
+             <div className="flex items-center space-x-2 text-sm text-gray-500 overflow-x-auto whitespace-nowrap pb-2">
+                <Link to="/" className="hover:text-navy-900 dark:hover:text-white">Home</Link>
+                <ChevronLeft size={12} className="rotate-180 flex-shrink-0" />
+                <Link to="/articles" className="hover:text-navy-900 dark:hover:text-white">Knowledge Base</Link>
+                <ChevronLeft size={12} className="rotate-180 flex-shrink-0" />
+                <Link to={`/articles?category=${encodeURIComponent(article.category)}`} className="hover:text-navy-900 dark:hover:text-white">{article.category}</Link>
+                <ChevronLeft size={12} className="rotate-180 flex-shrink-0" />
+                <span className="text-neon-dark dark:text-neon-green truncate max-w-[200px] font-medium">{article.title}</span>
+             </div>
+             {/* Conditional Back Link for Troubleshooting Context */}
+             {fromTroubleshooting && (
+                 <Link to="/troubleshooting" className="text-xs font-bold text-neon-blue hover:underline flex items-center gap-1">
+                     <ArrowLeft size={12} /> Back to Troubleshooting Hub
+                 </Link>
+             )}
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">

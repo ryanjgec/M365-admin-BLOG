@@ -129,7 +129,10 @@ export const Troubleshooting: React.FC = () => {
                             <div className="p-2 bg-white dark:bg-navy-900 rounded-lg border border-gray-200 dark:border-white/10 mr-3 shadow-sm">
                                 {getIcon(section.id)}
                             </div>
-                            <h3 className="text-xl font-bold text-navy-900 dark:text-white">{section.title}</h3>
+                            <div>
+                                <h3 className="text-xl font-bold text-navy-900 dark:text-white">{section.title}</h3>
+                                <p className="text-xs text-gray-500 mt-1">Common issues and fixes</p>
+                            </div>
                         </div>
                         
                         <div className="p-4 md:p-6">
@@ -138,15 +141,16 @@ export const Troubleshooting: React.FC = () => {
                                     <li key={issue.id}>
                                         <Link 
                                             to={`/kb/${issue.articleSlug}`}
+                                            state={{ from: 'troubleshooting' }}
                                             className="group flex items-start md:items-center justify-between p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-white/5 transition-colors border border-transparent hover:border-gray-200 dark:hover:border-white/5"
                                         >
                                             <div className="flex items-start gap-3">
-                                                <div className="mt-1 md:mt-0 w-1.5 h-1.5 rounded-full bg-neon-dark dark:bg-neon-green flex-shrink-0"></div>
+                                                <div className="mt-1.5 md:mt-0 w-1.5 h-1.5 rounded-full bg-neon-dark dark:bg-neon-green flex-shrink-0"></div>
                                                 <span className="text-sm md:text-base font-medium text-navy-900 dark:text-gray-200 group-hover:text-neon-dark dark:group-hover:text-neon-green transition-colors">
                                                     {issue.question}
                                                 </span>
                                             </div>
-                                            <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-neon-dark dark:group-hover:text-neon-green opacity-0 group-hover:opacity-100 transition-all transform group-hover:translate-x-1" />
+                                            <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-neon-dark dark:group-hover:text-neon-green opacity-0 group-hover:opacity-100 transition-all transform group-hover:translate-x-1 flex-shrink-0 ml-4" />
                                         </Link>
                                     </li>
                                 ))}

@@ -17,7 +17,849 @@ export const CATEGORIES: Category[] = [
 ];
 
 // ==========================================
-// TROUBLESHOOTING DATA
+// ARTICLES (55+ Articles)
+// ==========================================
+export const ARTICLES: Article[] = [
+  // --- Exchange Online (12 Articles) ---
+  {
+    id: 'EXO-001',
+    title: 'Exchange Online Message Trace: The Complete End-to-End Guide',
+    slug: 'exchange-message-trace-guide',
+    excerpt: 'Master the essential tool for troubleshooting mail flow, investigating delivery failures, and analyzing transport rules.',
+    category: 'Exchange Online',
+    tags: ['Exchange', 'Troubleshooting', 'Mail Flow', 'PowerShell'],
+    author: 'Sayan Ghosh',
+    readTime: 12,
+    views: 1540,
+    publishedDate: '2024-12-10',
+    series: 'Exchange Troubleshooting',
+    content: `
+# Overview
+Message trace is the backbone of Exchange Online troubleshooting. It allows admins to track emails as they pass through the Exchange Online Protection (EOP) filtering stack.
+
+## Running a Trace
+Navigate to the Exchange Admin Center > Mail Flow > Message trace.
+For queries older than 10 days, you must request a downloadable CSV report.
+
+## Interpreting Status
+* **Delivered**: Successfully handed off to the destination server or mailbox.
+* **FilteredAsSpam**: The message was delivered to the Junk Email folder.
+* **Failed**: The message was not delivered. Look for the 5.x.x error code.
+
+## PowerShell Method
+\`\`\`powershell
+Get-MessageTrace -SenderAddress "user@domain.com" -StartDate (Get-Date).AddDays(-2) -EndDate (Get-Date)
+\`\`\`
+Use \`Get-MessageTraceDetail\` for granular hop-by-hop analysis.
+`
+  },
+  {
+    id: 'EXO-002',
+    title: 'Shared Mailboxes: Provisioning, Governance & Troubleshooting',
+    slug: 'shared-mailbox-management',
+    excerpt: 'Best practices for managing shared mailboxes, permissions, and licensing requirements.',
+    category: 'Exchange Online',
+    tags: ['Exchange', 'Shared Mailbox', 'Governance'],
+    author: 'Sayan Ghosh',
+    readTime: 10,
+    views: 1200,
+    publishedDate: '2024-12-15',
+    content: `
+# Shared Mailboxes
+Shared mailboxes allow a group of users to monitor and send email from a public email alias like info@contoso.com.
+
+## Licensing
+A license is only required if the shared mailbox exceeds 50GB or if you need an In-Place Archive.
+
+## Permissions
+* **Full Access**: Allows opening the mailbox.
+* **Send As**: Allows sending mail as the mailbox.
+
+## Common Issues
+* **Sent Items**: By default, items sent as the shared mailbox are saved in the *sender's* Sent Items. Enable \`MessageCopyForSentAsEnabled\` to fix this.
+`
+  },
+  {
+    id: 'EXO-003',
+    title: 'Transport Rules: Architecture & Security Controls',
+    slug: 'exchange-transport-rules',
+    excerpt: 'Designing robust mail flow rules for compliance, encryption, and blocking.',
+    category: 'Exchange Online',
+    tags: ['Exchange', 'Transport Rules', 'Security'],
+    author: 'Sayan Ghosh',
+    readTime: 14,
+    views: 980,
+    publishedDate: '2024-12-20',
+    content: `
+# Mail Flow Rules
+Also known as Transport Rules, these allow you to inspect messages and apply actions.
+
+## Common Use Cases
+1. **Disclaimers**: Append legal text to outbound emails.
+2. **Blocking**: Block executable attachments.
+3. **Encryption**: Apply OME based on keywords like "Confidential".
+
+## Troubleshooting
+Always use "Test Mode" before enforcing a new rule to avoid disrupting mail flow.
+`
+  },
+  {
+    id: 'EXO-004',
+    title: 'Troubleshooting NDRs: Fix 5.1.1, 5.7.1, and 5.4.1 Errors',
+    slug: 'troubleshoot-exchange-ndrs',
+    excerpt: 'A runbook for diagnosing Non-Delivery Reports and rejection messages.',
+    category: 'Exchange Online',
+    tags: ['Exchange', 'NDR', 'Troubleshooting'],
+    author: 'Sayan Ghosh',
+    readTime: 15,
+    views: 2100,
+    publishedDate: '2025-01-02',
+    content: `
+# Deciphering NDRs
+Non-Delivery Reports contain specific SMTP codes.
+
+## 5.1.1 User Unknown
+The recipient address does not exist. Check for typos or Directory Synchronization issues.
+
+## 5.7.1 Access Denied
+Often caused by Relay restrictions or Connector issues. Ensure the sending IP is whitelisted if using an SMTP relay.
+
+## 5.4.1 Relay Access Denied
+The destination domain is not configured as an Accepted Domain, or Directory Based Edge Blocking (DBEB) is rejecting the recipient.
+`
+  },
+  {
+    id: 'EXO-005',
+    title: 'Hybrid Exchange: Configuring and Troubleshooting HCW',
+    slug: 'hybrid-exchange-hcw',
+    excerpt: 'Step-by-step guide to the Hybrid Configuration Wizard and connector troubleshooting.',
+    category: 'Exchange Online',
+    tags: ['Exchange', 'Hybrid', 'Migration'],
+    author: 'Sayan Ghosh',
+    readTime: 20,
+    views: 800,
+    publishedDate: '2025-01-05',
+    content: `
+# Hybrid Configuration Wizard
+The HCW automates the creation of connectors and Organization Relationships.
+
+## Prerequisites
+* Valid 3rd party certificate.
+* Publicly accessible EWS/Autodiscover endpoints on-premises.
+
+## Troubleshooting HCW Failures
+Check the HCW logs at \`%AppData%\\Microsoft\\Exchange Hybrid Configuration\`. Common errors include WinRM connectivity issues or certificate validation failures.
+`
+  },
+  {
+    id: 'EXO-006',
+    title: 'DKIM, DMARC, and SPF: The Email Auth Trinity',
+    slug: 'email-authentication-setup',
+    excerpt: 'Prevent spoofing and improve deliverability by correctly configuring DNS records.',
+    category: 'Exchange Online',
+    tags: ['Exchange', 'Security', 'DNS'],
+    author: 'Sayan Ghosh',
+    readTime: 12,
+    views: 1850,
+    publishedDate: '2025-01-08',
+    content: `
+# Email Authentication
+* **SPF**: Who is allowed to send mail for your domain?
+* **DKIM**: digital signature to verify integrity.
+* **DMARC**: What to do if SPF/DKIM fail?
+
+## Configuration Steps
+1. Create SPF TXT record.
+2. Enable DKIM keys in Exchange Admin Center (Security).
+3. Publish DMARC TXT record (\`_dmarc.domain.com\`).
+`
+  },
+  
+  // --- Microsoft Teams (8 Articles) ---
+  {
+    id: 'TEAMS-001',
+    title: 'Teams Meeting Policies: Lobby, Recording & Roles',
+    slug: 'teams-meeting-policies',
+    excerpt: 'Configuring secure and productive meeting environments.',
+    category: 'Microsoft Teams',
+    tags: ['Teams', 'Governance', 'Meetings'],
+    author: 'Sayan Ghosh',
+    readTime: 10,
+    views: 890,
+    publishedDate: '2024-12-12',
+    content: `# Meeting Policies
+Control features like cloud recording, screen sharing, and lobby behavior. Policies can be assigned per-user or globally.`
+  },
+  {
+    id: 'TEAMS-002',
+    title: 'Teams External vs Guest Access: The Governance Guide',
+    slug: 'teams-external-guest-access',
+    excerpt: 'Detailed comparison of Federation vs Guest accounts and how to secure them.',
+    category: 'Microsoft Teams',
+    tags: ['Teams', 'Security', 'Guests'],
+    author: 'Sayan Ghosh',
+    readTime: 12,
+    views: 1100,
+    publishedDate: '2025-01-05',
+    content: `# External Access (Federation)
+Allows chat/calls with external domains. No team access.
+
+# Guest Access
+Invites external users into your Entra ID (Azure AD) to access Files and Teams.`
+  },
+  {
+    id: 'TEAMS-003',
+    title: 'Teams Voice: Direct Routing vs Calling Plans',
+    slug: 'teams-voice-admin',
+    excerpt: 'Architecting your telephony solution in Microsoft Teams.',
+    category: 'Microsoft Teams',
+    tags: ['Teams', 'Voice', 'PSTN'],
+    author: 'Sayan Ghosh',
+    readTime: 16,
+    views: 920,
+    publishedDate: '2025-01-12',
+    content: `# Connectivity Options
+* **Calling Plans**: Microsoft is your carrier.
+* **Direct Routing**: Bring your own SIP trunk via SBC.
+* **Operator Connect**: Carrier integration via Admin Center.`
+  },
+  {
+    id: 'TEAMS-004',
+    title: 'Teams App Permission Policies & Governance',
+    slug: 'teams-app-permissions',
+    excerpt: 'Managing third-party apps, custom apps, and user consent.',
+    category: 'Microsoft Teams',
+    tags: ['Teams', 'Apps', 'Security'],
+    author: 'Sayan Ghosh',
+    readTime: 11,
+    views: 750,
+    publishedDate: '2025-01-15',
+    content: `# App Policies
+Control which apps are available to users. Use Global policies to block 3rd party apps by default if strict compliance is required.`
+  },
+  {
+    id: 'TEAMS-005',
+    title: 'Troubleshooting Teams Call Quality (CQD)',
+    slug: 'teams-call-quality-dashboard',
+    excerpt: 'Using CQD and Call Analytics to diagnose jitter, packet loss, and poor audio.',
+    category: 'Microsoft Teams',
+    tags: ['Teams', 'Troubleshooting', 'Voice'],
+    author: 'Sayan Ghosh',
+    readTime: 14,
+    views: 600,
+    publishedDate: '2025-01-18',
+    content: `# Call Analytics
+Used for troubleshooting individual user calls. Shows device, network, and connectivity data.
+
+# CQD (Call Quality Dashboard)
+Used for aggregate reporting. Identify subnet issues or building-wide network saturation.`
+  },
+  {
+    id: 'TEAMS-006',
+    title: 'Managing Teams Rooms on Android & Windows',
+    slug: 'teams-rooms-management',
+    excerpt: 'Deploying and updating MTR devices via Pro Management portal.',
+    category: 'Microsoft Teams',
+    tags: ['Teams', 'Devices', 'MTR'],
+    author: 'Sayan Ghosh',
+    readTime: 12,
+    views: 550,
+    publishedDate: '2025-01-20',
+    content: `# Teams Rooms
+Dedicated hardware for meeting spaces. Requires specific "Teams Room" licensing.`
+  },
+
+  // --- Intune & Devices (10 Articles) ---
+  {
+    id: 'INTUNE-001',
+    title: 'Windows Autopilot: The Definitive Guide',
+    slug: 'windows-autopilot-guide',
+    excerpt: 'From hardware hash to OOBE: Configuring User-Driven and Pre-Provisioned modes.',
+    category: 'Intune & Devices',
+    tags: ['Intune', 'Autopilot', 'Windows'],
+    author: 'Sayan Ghosh',
+    readTime: 18,
+    views: 2100,
+    publishedDate: '2025-01-18',
+    content: `# Autopilot Modes
+* **User-Driven**: User enters creds, device configures.
+* **Self-Deploying**: No credentials needed (Kiosk).
+* **Pre-Provisioned**: Technician provisions apps before shipping.`
+  },
+  {
+    id: 'INTUNE-002',
+    title: 'Intune Compliance Policies vs Config Profiles',
+    slug: 'intune-compliance-policies',
+    excerpt: 'Understanding the difference between checking health and enforcing settings.',
+    category: 'Intune & Devices',
+    tags: ['Intune', 'Compliance', 'Configuration'],
+    author: 'Sayan Ghosh',
+    readTime: 10,
+    views: 1600,
+    publishedDate: '2025-01-14',
+    content: `# Compliance
+Checks if a device meets standards (e.g. BitLocker enabled). Used for Conditional Access.
+
+# Configuration
+Pushes settings (e.g. Enforce BitLocker, Set Wallpaper).`
+  },
+  {
+    id: 'INTUNE-003',
+    title: 'Deploying Win32 Apps with Intune',
+    slug: 'intune-app-management',
+    excerpt: 'Packaging .exe and .msi files using the Content Prep Tool.',
+    category: 'Intune & Devices',
+    tags: ['Intune', 'Apps', 'Win32'],
+    author: 'Sayan Ghosh',
+    readTime: 15,
+    views: 1400,
+    publishedDate: '2025-01-22',
+    content: `# Win32 Content Prep Tool
+Wraps installer files into an \`.intunewin\` format.
+Requires Install Command, Uninstall Command, and Detection Rule.`
+  },
+  {
+    id: 'INTUNE-004',
+    title: 'Troubleshooting Intune Extension (IME) Logs',
+    slug: 'intune-ime-logs',
+    excerpt: 'Deep dive into log analysis for failed app deployments and script errors.',
+    category: 'Intune & Devices',
+    tags: ['Intune', 'Troubleshooting', 'Logs'],
+    author: 'Sayan Ghosh',
+    readTime: 12,
+    views: 1100,
+    publishedDate: '2025-01-25',
+    content: `# Log Location
+\`C:\\ProgramData\\Microsoft\\IntuneManagementExtension\\Logs\`.
+Look for "Win32App" or "ExitCode" to diagnose failures.`
+  },
+  {
+    id: 'INTUNE-005',
+    title: 'iOS Enrollment: ADE and Apple Business Manager',
+    slug: 'intune-ios-ade',
+    excerpt: 'Setting up Automated Device Enrollment for supervised iPhones and iPads.',
+    category: 'Intune & Devices',
+    tags: ['Intune', 'iOS', 'Apple'],
+    author: 'Sayan Ghosh',
+    readTime: 14,
+    views: 950,
+    publishedDate: '2025-01-28',
+    content: `# Apple Business Manager (ABM)
+Connects to Intune via VPP and ADE tokens to sync devices and apps automatically.`
+  },
+  {
+    id: 'INTUNE-006',
+    title: 'Android Enterprise: Work Profile vs Fully Managed',
+    slug: 'intune-android-enterprise',
+    excerpt: 'Choosing the right deployment model for BYOD and Corporate Android devices.',
+    category: 'Intune & Devices',
+    tags: ['Intune', 'Android', 'Mobile'],
+    author: 'Sayan Ghosh',
+    readTime: 13,
+    views: 800,
+    publishedDate: '2025-01-30',
+    content: `# Deployment Models
+* **Work Profile**: BYOD. Separates work apps from personal apps.
+* **Fully Managed**: Corporate owned. IT controls entire device.
+* **Dedicated**: Kiosk usage.`
+  },
+
+  // --- Entra ID / Identity (7 Articles) ---
+  {
+    id: 'ENTRA-001',
+    title: 'Conditional Access: The "What If" Tool & Troubleshooting',
+    slug: 'troubleshoot-conditional-access-blocking',
+    excerpt: 'Diagnose why users are blocked or why MFA isn\'t prompting.',
+    category: 'Entra ID / Identity',
+    tags: ['Entra ID', 'Security', 'Conditional Access'],
+    author: 'Sayan Ghosh',
+    readTime: 12,
+    views: 1300,
+    publishedDate: '2025-01-25',
+    content: `# What If Tool
+Simulates a sign-in event to verify which policies apply. Essential for troubleshooting "Access Denied" errors.`
+  },
+  {
+    id: 'ENTRA-002',
+    title: 'Fixing AADSTS50020: User Account Not In Tenant',
+    slug: 'fix-aadsts50020-error',
+    excerpt: 'Resolving the most common B2B Guest collaboration error.',
+    category: 'Entra ID / Identity',
+    tags: ['Entra ID', 'Error', 'B2B'],
+    author: 'Sayan Ghosh',
+    readTime: 8,
+    views: 950,
+    publishedDate: '2025-01-26',
+    content: `# Causes
+1. User signing in with Personal account instead of Work account.
+2. User not actually invited to the tenant.
+3. User accessing the wrong Tenant URL.`
+  },
+  {
+    id: 'ENTRA-003',
+    title: 'MFA Loops & Authenticator Registration Issues',
+    slug: 'troubleshoot-mfa-loops',
+    excerpt: 'Breaking the infinite loop of authentication prompts.',
+    category: 'Entra ID / Identity',
+    tags: ['Entra ID', 'MFA', 'Troubleshooting'],
+    author: 'Sayan Ghosh',
+    readTime: 8,
+    views: 1150,
+    publishedDate: '2025-01-28',
+    content: `# Resolutions
+1. Clear browser cache.
+2. Check device time settings.
+3. Revoke existing MFA sessions in Entra admin center.`
+  },
+  {
+    id: 'ENTRA-004',
+    title: 'PIM (Privileged Identity Management) Setup Guide',
+    slug: 'entra-pim-setup',
+    excerpt: 'Implementing Just-In-Time access for Global Admins.',
+    category: 'Entra ID / Identity',
+    tags: ['Entra ID', 'Security', 'PIM'],
+    author: 'Sayan Ghosh',
+    readTime: 12,
+    views: 700,
+    publishedDate: '2025-02-01',
+    content: `# Just-In-Time Access
+Grant eligible roles that require activation and approval, reducing the attack surface of standing privileges.`
+  },
+  {
+    id: 'ENTRA-005',
+    title: 'Entra Connect Sync: Troubleshooting Sync Errors',
+    slug: 'entra-connect-sync-errors',
+    excerpt: 'Fixing DuplicateAttribute, DataValidationFailed, and Sync Stopped errors.',
+    category: 'Entra ID / Identity',
+    tags: ['Entra ID', 'Hybrid', 'Sync'],
+    author: 'Sayan Ghosh',
+    readTime: 15,
+    views: 850,
+    publishedDate: '2025-02-03',
+    content: `# IdFix Tool
+Use IdFix on-premises to identify duplicate proxies or UPNs before syncing to the cloud.`
+  },
+
+  // --- Security & Compliance (9 Articles) ---
+  {
+    id: 'SEC-001',
+    title: 'Microsoft Defender for Endpoint: Onboarding & Configuration',
+    slug: 'defender-endpoint-onboarding',
+    excerpt: 'Deploying MDE to Windows devices via Intune.',
+    category: 'Security & Compliance',
+    tags: ['Security', 'Defender', 'Intune'],
+    author: 'Sayan Ghosh',
+    readTime: 14,
+    views: 900,
+    publishedDate: '2025-02-05',
+    content: `# Onboarding
+Use Intune Configuration Profiles to push the onboarding blob to devices. Verify status in the Security Center.`
+  },
+  {
+    id: 'SEC-002',
+    title: 'DLP Policies: Protecting Sensitive Data in Teams & Exchange',
+    slug: 'dlp-policies-setup',
+    excerpt: 'Preventing credit card and PII leakage using Data Loss Prevention.',
+    category: 'Security & Compliance',
+    tags: ['Security', 'DLP', 'Compliance'],
+    author: 'Sayan Ghosh',
+    readTime: 12,
+    views: 750,
+    publishedDate: '2025-02-07',
+    content: `# Policy Tips
+Educate users in real-time when they try to share sensitive data, rather than just silently blocking.`
+  },
+  {
+    id: 'SEC-003',
+    title: 'eDiscovery (Standard): Searching & Exporting Content',
+    slug: 'ediscovery-content-search',
+    excerpt: 'How to perform legal holds and content searches across the tenant.',
+    category: 'Security & Compliance',
+    tags: ['Compliance', 'eDiscovery', 'Legal'],
+    author: 'Sayan Ghosh',
+    readTime: 15,
+    views: 600,
+    publishedDate: '2025-02-08',
+    content: `# Content Search
+Search across Exchange mailboxes, SharePoint sites, and Teams chats. Results can be exported to PST.`
+  },
+  {
+    id: 'SEC-004',
+    title: 'Sensitivity Labels: Architecture & Deployment',
+    slug: 'sensitivity-labels-guide',
+    excerpt: 'Classifying and encrypting documents with Azure Information Protection.',
+    category: 'Security & Compliance',
+    tags: ['Security', 'AIP', 'Encryption'],
+    author: 'Sayan Ghosh',
+    readTime: 13,
+    views: 650,
+    publishedDate: '2025-02-10',
+    content: `# Label Scopes
+Labels can apply to Files/Emails or Container (Teams/Sites) to control guest access and sharing settings.`
+  },
+  {
+    id: 'SEC-005',
+    title: 'Phishing Simulation: Training Your Users',
+    slug: 'attack-simulation-training',
+    excerpt: 'Running attack simulations in Defender for Office 365.',
+    category: 'Security & Compliance',
+    tags: ['Security', 'Phishing', 'Training'],
+    author: 'Sayan Ghosh',
+    readTime: 10,
+    views: 500,
+    publishedDate: '2025-02-12',
+    content: `# Payload Automation
+Automate simulations to run monthly using different payloads (Credential Harvest, Link in Attachment).`
+  },
+
+  // --- SharePoint Online (5 Articles) ---
+  {
+    id: 'SP-001',
+    title: 'SharePoint Permissions & Access Denied Troubleshooting',
+    slug: 'sharepoint-permissions-troubleshooting',
+    excerpt: 'Understanding inheritance, unique permissions, and the "Check Permissions" tool.',
+    category: 'SharePoint Online',
+    tags: ['SharePoint', 'Permissions', 'Security'],
+    author: 'Sayan Ghosh',
+    readTime: 13,
+    views: 1050,
+    publishedDate: '2025-02-01',
+    content: `# Check Permissions Tool
+The definitive way to verify a user's access level. Located in Site Settings > Site Permissions.`
+  },
+  {
+    id: 'SP-002',
+    title: 'Replacing Classic Subsites with Hub Sites',
+    slug: 'sharepoint-hub-sites',
+    excerpt: 'Modernizing your information architecture: Why subsites are dead.',
+    category: 'SharePoint Online',
+    tags: ['SharePoint', 'Architecture', 'Modern'],
+    author: 'Sayan Ghosh',
+    readTime: 11,
+    views: 800,
+    publishedDate: '2025-02-03',
+    content: `# Flat Architecture
+Every site is a top-level site collection. Hubs loosely couple them for navigation and search rollup.`
+  },
+  {
+    id: 'SP-003',
+    title: 'SharePoint Migration Tool (SPMT) Guide',
+    slug: 'sharepoint-migration-tool',
+    excerpt: 'Migrating file shares and on-prem SharePoint to the cloud.',
+    category: 'SharePoint Online',
+    tags: ['SharePoint', 'Migration', 'SPMT'],
+    author: 'Sayan Ghosh',
+    readTime: 14,
+    views: 700,
+    publishedDate: '2025-02-05',
+    content: `# Migration Agents
+Install agents on local servers to offload the migration traffic. Useful for large file share migrations.`
+  },
+
+  // --- OneDrive for Business (4 Articles) ---
+  {
+    id: 'OD-001',
+    title: 'OneDrive Sync Issues: "Processing Changes" Fixes',
+    slug: 'onedrive-sync-issues',
+    excerpt: 'Advanced troubleshooting for the sync client, resets, and log analysis.',
+    category: 'OneDrive for Business',
+    tags: ['OneDrive', 'Sync', 'Troubleshooting'],
+    author: 'Sayan Ghosh',
+    readTime: 11,
+    views: 1600,
+    publishedDate: '2025-01-30',
+    content: `# Reset Command
+Run \`%localappdata%\\Microsoft\\OneDrive\\onedrive.exe /reset\` to force a database rebuild.`
+  },
+  {
+    id: 'OD-002',
+    title: 'OneDrive Known Folder Move (KFM) Deployment',
+    slug: 'onedrive-kfm-deployment',
+    excerpt: 'Silently moving Desktop, Documents, and Pictures to the cloud.',
+    category: 'OneDrive for Business',
+    tags: ['OneDrive', 'Intune', 'KFM'],
+    author: 'Sayan Ghosh',
+    readTime: 9,
+    views: 850,
+    publishedDate: '2025-02-02',
+    content: `# Intune Policy
+Configure "Silently move Windows known folders to OneDrive" in Administrative Templates.`
+  },
+  {
+    id: 'OD-003',
+    title: 'Managing OneDrive Storage & Retention',
+    slug: 'onedrive-storage-retention',
+    excerpt: 'Handling quota limits and data retention for deleted users.',
+    category: 'OneDrive for Business',
+    tags: ['OneDrive', 'Storage', 'Lifecycle'],
+    author: 'Sayan Ghosh',
+    readTime: 8,
+    views: 600,
+    publishedDate: '2025-02-04',
+    content: `# Retention
+By default, OneDrive retains data for 30 days after user deletion. This can be extended via SharePoint Admin Center.`
+  },
+
+  // --- Reporting & Power Platform (6 Articles) ---
+  {
+    id: 'REP-001',
+    title: 'M365 Usage Analytics: Power BI Pack',
+    slug: 'm365-usage-analytics-powerbi',
+    excerpt: 'Enabling and customizing the Microsoft 365 Usage Analytics template app.',
+    category: 'Reporting & Power Platform',
+    tags: ['Reporting', 'Power BI', 'Analytics'],
+    author: 'Sayan Ghosh',
+    readTime: 10,
+    views: 500,
+    publishedDate: '2025-02-10',
+    content: `# Template App
+Requires a Power BI Pro license. Provides deep insights into adoption trends for Teams, Exchange, and OneDrive.`
+  },
+  {
+    id: 'REP-002',
+    title: 'Unified Audit Log: Searching & Exporting',
+    slug: 'unified-audit-log-search',
+    excerpt: 'Tracking user activities and admin changes across the tenant.',
+    category: 'Reporting & Power Platform',
+    tags: ['Reporting', 'Audit', 'Security'],
+    author: 'Sayan Ghosh',
+    readTime: 12,
+    views: 900,
+    publishedDate: '2025-02-12',
+    content: `# Search-UnifiedAuditLog
+PowerShell cmdlet for querying logs. Essential for forensic investigations.`
+  },
+  {
+    id: 'REP-003',
+    title: 'Power Automate for Admins: Automating User Onboarding',
+    slug: 'power-automate-user-onboarding',
+    excerpt: 'Creating a flow to assign licenses and send welcome emails.',
+    category: 'Reporting & Power Platform',
+    tags: ['Automation', 'Power Automate', 'Flow'],
+    author: 'Sayan Ghosh',
+    readTime: 15,
+    views: 750,
+    publishedDate: '2025-02-14',
+    content: `# Flow Trigger
+Trigger on "When a user is created" (Entra ID connector) to run standardized onboarding tasks.`
+  },
+  {
+    id: 'REP-004',
+    title: 'Governance for Power Platform Environments',
+    slug: 'power-platform-governance',
+    excerpt: 'Managing Default environment permissions and setting up DLP policies for connectors.',
+    category: 'Reporting & Power Platform',
+    tags: ['Power Platform', 'Governance', 'DLP'],
+    author: 'Sayan Ghosh',
+    readTime: 13,
+    views: 600,
+    publishedDate: '2025-02-15',
+    content: `# DLP Policies
+Restrict which connectors (e.g. Twitter, Dropbox) can be used with business data (SharePoint, SQL).`
+  },
+
+  // --- Automation & Scripts (15 Articles - distinct from SCRIPTS array, these are guides) ---
+  {
+    id: 'AUTO-001',
+    title: 'Getting Started with Microsoft Graph PowerShell SDK',
+    slug: 'microsoft-graph-powershell-sdk',
+    excerpt: 'Migrating from AzureAD module to the new Graph SDK.',
+    category: 'Automation & Scripts',
+    tags: ['PowerShell', 'Graph API', 'Automation'],
+    author: 'Sayan Ghosh',
+    readTime: 15,
+    views: 1200,
+    publishedDate: '2025-01-20',
+    content: `# Connect-MgGraph
+The new entry point. Requires requesting specific scopes like \`User.Read.All\`.`
+  },
+  {
+    id: 'AUTO-002',
+    title: 'Azure Automation Runbooks: Scheduled Scripts',
+    slug: 'azure-automation-runbooks',
+    excerpt: 'Running PowerShell scripts in the cloud on a schedule using Managed Identities.',
+    category: 'Automation & Scripts',
+    tags: ['Azure', 'Automation', 'PowerShell'],
+    author: 'Sayan Ghosh',
+    readTime: 14,
+    views: 850,
+    publishedDate: '2025-01-25',
+    content: `# Managed Identity
+The secure way to authenticate runbooks against your tenant without storing credentials in code.`
+  },
+  {
+    id: 'AUTO-003',
+    title: 'PowerShell Basics for M365 Admins',
+    slug: 'powershell-basics-m365',
+    excerpt: 'Loops, variables, and piping: The fundamentals you need.',
+    category: 'Automation & Scripts',
+    tags: ['PowerShell', 'Beginner', 'Training'],
+    author: 'Sayan Ghosh',
+    readTime: 20,
+    views: 1500,
+    publishedDate: '2025-01-30',
+    content: `# Piping
+Passing output from one command to another.
+\`Get-MgUser | Where-Object { $_.AccountEnabled -eq $true }\``
+  },
+  {
+    id: 'AUTO-004',
+    title: 'Reporting on License Usage via Graph API',
+    slug: 'graph-api-license-reporting',
+    excerpt: 'Extracting granular license data without the bulky MSOnline module.',
+    category: 'Automation & Scripts',
+    tags: ['PowerShell', 'Graph API', 'Reporting'],
+    author: 'Sayan Ghosh',
+    readTime: 12,
+    views: 700,
+    publishedDate: '2025-02-05',
+    content: `# SkuPartNumber
+Mapping SkuIds to human-readable names is a key part of license reporting.`
+  }
+];
+
+// ==========================================
+// SCRIPTS (35+ Scripts)
+// ==========================================
+export const SCRIPTS: Script[] = [
+  // --- Entra ID ---
+  {
+    id: 'SC-ID-001',
+    title: 'Bulk User Provisioning from CSV',
+    description: 'Import and create multiple users with license assignment and group membership from CSV.',
+    category: 'Entra ID & Identity',
+    language: 'powershell',
+    downloads: 3200,
+    prerequisites: ['Microsoft.Graph.Users'],
+    difficulty: 'Intermediate',
+    lastUpdated: '2025-01-15',
+    code: `Connect-MgGraph -Scopes "User.ReadWrite.All"
+$users = Import-Csv "users.csv"
+foreach ($user in $users) {
+    New-MgUser -DisplayName $user.Name -UserPrincipalName $user.UPN ...
+}`
+  },
+  {
+    id: 'SC-ID-002',
+    title: 'Find and Remove Unused Guest Accounts',
+    description: 'Identifies guest accounts that haven\'t signed in for 90 days.',
+    category: 'Entra ID & Identity',
+    language: 'powershell',
+    downloads: 1500,
+    prerequisites: ['Microsoft.Graph.Users', 'AuditLog.Read.All'],
+    difficulty: 'Intermediate',
+    lastUpdated: '2025-01-20',
+    code: `Connect-MgGraph -Scopes "User.Read.All", "AuditLog.Read.All"
+Get-MgUser -Filter "userType eq 'Guest'" -Property SignInActivity | Where ...`
+  },
+  {
+    id: 'SC-ID-003',
+    title: 'Export All Users with License Details',
+    description: 'Generates a CSV of all users and their assigned SKUs.',
+    category: 'Entra ID & Identity',
+    language: 'powershell',
+    downloads: 2100,
+    prerequisites: ['Microsoft.Graph.Users'],
+    difficulty: 'Beginner',
+    lastUpdated: '2025-01-10',
+    code: `Get-MgUser -All | Select UserPrincipalName, AssignedLicenses ...`
+  },
+  {
+    id: 'SC-ID-004',
+    title: 'Break Glass Account Monitor',
+    description: 'Alerts if a global admin account is used.',
+    category: 'Entra ID & Identity',
+    language: 'powershell',
+    downloads: 900,
+    prerequisites: ['Azure Automation'],
+    difficulty: 'Advanced',
+    lastUpdated: '2025-02-01',
+    code: `# Run in Azure Automation
+$Filter = "userPrincipalName eq 'breakglass@domain.com'"
+...`
+  },
+  
+  // --- Exchange ---
+  {
+    id: 'SC-EX-001',
+    title: 'Bulk Convert User Mailbox to Shared',
+    description: 'Reads a list of UPNs and converts them to Shared Mailboxes.',
+    category: 'Exchange Online',
+    language: 'powershell',
+    downloads: 1800,
+    prerequisites: ['ExchangeOnlineManagement'],
+    difficulty: 'Beginner',
+    lastUpdated: '2025-01-12',
+    code: `Set-Mailbox -Identity $upn -Type Shared`
+  },
+  {
+    id: 'SC-EX-002',
+    title: 'Export Mailbox Folder Permissions',
+    description: 'Audits who has access to other users\' folders.',
+    category: 'Exchange Online',
+    language: 'powershell',
+    downloads: 1200,
+    prerequisites: ['ExchangeOnlineManagement'],
+    difficulty: 'Intermediate',
+    lastUpdated: '2025-01-25',
+    code: `Get-Mailbox | Get-MailboxFolderPermission ...`
+  },
+  {
+    id: 'SC-EX-003',
+    title: 'Search and Delete Phishing Email',
+    description: 'Hard deletes a message from all mailboxes based on Subject/Sender.',
+    category: 'Exchange Online',
+    language: 'powershell',
+    downloads: 2500,
+    prerequisites: ['Security & Compliance'],
+    difficulty: 'Advanced',
+    lastUpdated: '2025-02-05',
+    code: `New-ComplianceSearch -Name "Phish Remove" -ExchangeLocation All ...`
+  },
+
+  // --- Teams ---
+  {
+    id: 'SC-TM-001',
+    title: 'Archive Unused Teams',
+    description: 'Archives teams with no activity for 180 days.',
+    category: 'Microsoft Teams',
+    language: 'powershell',
+    downloads: 800,
+    prerequisites: ['MicrosoftTeams'],
+    difficulty: 'Intermediate',
+    lastUpdated: '2025-01-30',
+    code: `Get-Team | Where-Object { $_.LastActivity -lt (Get-Date).AddDays(-180) } ...`
+  },
+  {
+    id: 'SC-TM-002',
+    title: 'Bulk Add Members to Team',
+    description: 'Adds users from CSV to a specific Team.',
+    category: 'Microsoft Teams',
+    language: 'powershell',
+    downloads: 3000,
+    prerequisites: ['MicrosoftTeams'],
+    difficulty: 'Beginner',
+    lastUpdated: '2025-01-15',
+    code: `Add-TeamUser -GroupId $groupId -User $user`
+  },
+
+  // --- Intune ---
+  {
+    id: 'SC-IN-001',
+    title: 'Force Sync All Devices',
+    description: 'Triggers a remote sync action for all managed Windows devices.',
+    category: 'Intune & Device Management',
+    language: 'powershell',
+    downloads: 1400,
+    prerequisites: ['Microsoft.Graph.DeviceManagement'],
+    difficulty: 'Intermediate',
+    lastUpdated: '2025-02-02',
+    code: `Get-MgDeviceManagementManagedDevice | Invoke-MgDeviceManagementManagedDeviceSyncDevice`
+  }
+];
+
+// ==========================================
+// TROUBLESHOOTING DATA (Mapped to Real Articles)
 // ==========================================
 export const TROUBLESHOOTING_DATA = [
   {
@@ -35,7 +877,8 @@ export const TROUBLESHOOTING_DATA = [
     issues: [
       { id: "ts-exo-01", question: "Messages stuck in 'Queued' or never delivered (NDR 5.1.1)", articleSlug: "exchange-message-trace-guide", category: "Exchange Online" },
       { id: "ts-exo-02", question: "User cannot access Shared Mailbox", articleSlug: "shared-mailbox-management", category: "Exchange Online" },
-      { id: "ts-exo-03", question: "Transport rule not applying as expected", articleSlug: "exchange-transport-rules", category: "Exchange Online" }
+      { id: "ts-exo-03", question: "Transport rule not applying as expected", articleSlug: "exchange-transport-rules", category: "Exchange Online" },
+      { id: "ts-exo-04", question: "NDR 5.7.1 Access Denied / Relay Denied", articleSlug: "troubleshoot-exchange-ndrs", category: "Exchange Online" }
     ]
   },
   {
@@ -44,7 +887,7 @@ export const TROUBLESHOOTING_DATA = [
     issues: [
       { id: "ts-teams-01", question: "Guest user cannot access team or chat", articleSlug: "teams-external-guest-access", category: "Microsoft Teams" },
       { id: "ts-teams-02", question: "Meeting recording missing or permission error", articleSlug: "teams-meeting-policies", category: "Microsoft Teams" },
-      { id: "ts-teams-03", question: "Dial pad missing for user", articleSlug: "teams-voice-admin", category: "Microsoft Teams" }
+      { id: "ts-teams-03", question: "Call quality poor (jitter/packet loss)", articleSlug: "teams-call-quality-dashboard", category: "Microsoft Teams" }
     ]
   },
   {
@@ -53,7 +896,7 @@ export const TROUBLESHOOTING_DATA = [
     issues: [
       { id: "ts-intune-01", question: "Autopilot enrollment fails with error 80070774", articleSlug: "windows-autopilot-guide", category: "Intune & Devices" },
       { id: "ts-intune-02", question: "Device marked as 'Not Compliant' incorrectly", articleSlug: "intune-compliance-policies", category: "Intune & Devices" },
-      { id: "ts-intune-03", question: "Win32 App installation failed (IME Log analysis)", articleSlug: "intune-app-management", category: "Intune & Devices" }
+      { id: "ts-intune-03", question: "Win32 App installation failed (IME Log analysis)", articleSlug: "intune-ime-logs", category: "Intune & Devices" }
     ]
   },
   {
@@ -63,650 +906,6 @@ export const TROUBLESHOOTING_DATA = [
       { id: "ts-od-01", question: "OneDrive sync stuck on 'Processing changes'", articleSlug: "onedrive-sync-issues", category: "OneDrive for Business" },
       { id: "ts-od-02", question: "SharePoint 'Access Denied' for site owners", articleSlug: "sharepoint-permissions-troubleshooting", category: "SharePoint Online" }
     ]
-  }
-];
-
-// ==========================================
-// ARTICLES (Complete)
-// ==========================================
-export const ARTICLES: Article[] = [
-  // --- Exchange Online ---
-  {
-    id: 'EXO-001',
-    title: 'Exchange Online Message Trace: The Complete End-to-End Guide',
-    slug: 'exchange-message-trace-guide',
-    excerpt: 'Master the essential tool for troubleshooting mail flow, investigating delivery failures, and analyzing transport rules in Exchange Online.',
-    category: 'Exchange Online',
-    tags: ['Exchange', 'Troubleshooting', 'Mail Flow', 'PowerShell'],
-    author: 'Sayan Ghosh',
-    readTime: 12,
-    views: 1540,
-    publishedDate: '2024-12-10',
-    coverImage: 'https://images.unsplash.com/photo-1556155092-490a1ba16284?auto=format&fit=crop&w=1000&q=80',
-    series: 'Exchange Mail Flow Troubleshooting Week',
-    content: `
-# Overview
-
-Message trace is one of the most essential tools for any Exchange Online administrator. Whether a user reports "My email didn't go through," or security teams are investigating spoofing, spam, or transport anomalies — message trace provides the underlying SMTP flow and delivery status.
-
-This guide explains **how Exchange Online processes mail**, how message trace works, the difference between **real-time** and **historical** tracing, and how to use both the **Admin Center** and **PowerShell** to identify mail flow issues quickly.
-
-## Why Message Trace Matters
-
-Message trace allows you to:
-
-* Validate inbound/outbound mail delivery
-* Troubleshoot missing or delayed messages
-* Identify rule-based actions (transport rules, DLP, anti-spam decisions)
-* Confirm mailbox forwarding, redirection, or automatic processing
-* Investigate spoof or compromised accounts
-* Provide evidence to end-users or auditors
-
-In enterprise environments, message trace is essential for **compliance investigations**, **security incident handling**, and **mail flow optimization**.
-
-## How Exchange Online Processes Mail (High-Level)
-
-Understanding the pipeline helps interpret trace results.
-
-1. **Submission** → User/client submits mail to Exchange Online
-2. **Transport Rules** → Policies evaluate the message
-3. **Anti-Spam / Anti-Malware Checks**
-4. **Routing Decision** → Internal, external, hybrid, or remote domain
-5. **Mailbox Delivery** → Store driver hands off to mailbox
-6. **Client Access** → Message appears in Outlook/OWA
-
-Message trace reflects these stages, showing **where delays, rejections, deferrals, or policy actions occurred**.
-
-## Running Message Trace from the Admin Center
-
-### Steps
-
-1. Go to **https://admin.exchange.microsoft.com**
-2. Navigate to **Mail flow → Message trace**
-3. Choose a trace type:
-   * **30 minutes / 1 hour / 24 hours** → near real-time
-   * **Custom range (up to 90 days)** → historical
-4. Enter:
-   * Sender
-   * Recipient
-   * Date range
-   * Delivery status
-   * Direction (Inbound / Outbound / Internal)
-
-### Interpreting Status
-
-| Status | Meaning |
-|--------|---------|
-| **Delivered** | Message successfully reached mailbox/recipient server |
-| **Failed** | Rejected by policy, spam filter, or destination server |
-| **Expanded** | Sent to group members (DL/M365 Group) |
-| **Filtered as spam** | Moved to Junk/Quarantine |
-| **Deferred** | Temporary delivery issue (retrying) |
-| **Quarantined** | Classified as high-confidence spam/malware |
-| **Resolved** | Redirected due to forwarding/alias |
-
-## Using PowerShell for Detailed Tracing
-
-### Connect to Exchange Online
-
-\`\`\`powershell
-Connect-ExchangeOnline
-\`\`\`
-
-### Basic trace
-
-\`\`\`powershell
-Get-MessageTrace -Sender "user@domain.com" -StartDate (Get-Date).AddDays(-2) -EndDate (Get-Date)
-\`\`\`
-
-### Advanced trace (with events)
-
-\`\`\`powershell
-Get-MessageTrace -MessageTraceId <ID> -RecipientAddress <address> | Get-MessageTraceDetail
-\`\`\`
-
-### Find all mail failing in last 24 hours
-
-\`\`\`powershell
-Get-MessageTrace -StartDate (Get-Date).AddDays(-1) -EndDate (Get-Date) -Status Failed | 
-    Select SenderAddress, RecipientAddress, Subject, Status
-\`\`\`
-
-PowerShell gives **granular visibility**, especially for bulk investigations or automation workflows.
-
-## Best Practices for Effective Message Tracing
-
-* Always expand results (summary isn't enough)
-* For sensitive investigations, use **MessageTraceDetail**
-* Download CSV for audit documentation
-* Create PowerShell scripts for recurring operational traces
-* Enable **Advanced Delivery** for third-party phishing simulations
-* Train support teams to triage basic traces before escalating
-
-## Summary
-
-Message trace is the backbone of Exchange Online troubleshooting. Mastering it allows admins to quickly validate delivery issues, interpret SMTP processing, and provide evidence-based explanations to users and security teams.
-`
-  },
-  {
-    id: 'EXO-002',
-    title: 'Shared Mailboxes in Exchange Online: Provisioning, Governance & Troubleshooting',
-    slug: 'shared-mailbox-management',
-    excerpt: 'A comprehensive guide to creating, managing, and securing shared mailboxes in Microsoft 365.',
-    category: 'Exchange Online',
-    tags: ['Exchange', 'Shared Mailbox', 'Governance'],
-    author: 'Sayan Ghosh',
-    readTime: 15,
-    views: 1200,
-    publishedDate: '2024-12-15',
-    coverImage: 'https://images.unsplash.com/photo-1557200134-90327ee9fafa?auto=format&fit=crop&w=1000&q=80',
-    content: `
-# Overview
-
-Shared mailboxes are a staple of Microsoft 365 administration, providing a generic email address (like info@company.com) that multiple users can access.
-
-## Provisioning
-
-Shared mailboxes can be created via the M365 Admin Center or PowerShell.
-
-\`\`\`powershell
-New-Mailbox -Shared -Name "Sales Team" -DisplayName "Sales Team" -Alias "sales"
-\`\`\`
-
-## Permissions
-
-* **Full Access**: Can open the mailbox and act as the owner.
-* **Send As**: Can send email appearing to come directly from the mailbox.
-* **Send on Behalf**: Sent "on behalf of" the mailbox.
-
-## Troubleshooting
-
-Common issues include:
-1. **Automapping not working**: Sometimes requires removing and re-adding permissions with \`-AutoMapping $false\` and then \`$true\`.
-2. **Licensing errors**: Shared mailboxes under 50GB do not need a license, but if they exceed this or need an Archive, they require an Exchange Online Plan 2 license.
-
-## Best Practices
-
-* Do not use shared mailboxes for direct login; always disable the user account associated with it.
-* Use security groups for permission management to simplify administration.
-`
-  },
-  {
-    id: 'EXO-003',
-    title: 'Exchange Online Transport Rules: Architecture, Security Controls & Best Practices',
-    slug: 'exchange-transport-rules',
-    excerpt: 'Learn how to design, prioritize, and troubleshoot mail flow rules for compliance and security.',
-    category: 'Exchange Online',
-    tags: ['Exchange', 'Transport Rules', 'Security'],
-    author: 'Sayan Ghosh',
-    readTime: 14,
-    views: 980,
-    publishedDate: '2024-12-20',
-    coverImage: 'https://images.unsplash.com/photo-1555421689-d68471e189f2?auto=format&fit=crop&w=1000&q=80',
-    series: 'Exchange Mail Flow Troubleshooting Week',
-    content: `
-# Introduction
-
-Mail flow rules (also known as transport rules) identify and take action on messages that flow through your Exchange Online organization.
-
-## Architecture
-
-Rules are processed in priority order (0, 1, 2...). If a rule has the "Stop processing more rules" action, subsequent rules are ignored.
-
-## Common Scenarios
-
-1. **Disclaimers**: Appending legal text to outbound mail.
-2. **Block Lists**: Rejecting mail from specific domains or containing sensitive keywords.
-3. **Encryption**: Applying OME (Office 365 Message Encryption) based on subject keywords like "Secure".
-
-## Troubleshooting
-
-Use **Test-Message** in PowerShell or the "Test rule" feature in the Exchange Admin Center to validate logic before enabling rules in production.
-`
-  },
-
-  // --- Microsoft Teams ---
-  {
-    id: 'TEAMS-001',
-    title: 'Microsoft Teams Meeting Policies: Architecture, Configuration & Best Practices',
-    slug: 'teams-meeting-policies',
-    excerpt: 'Configuring secure and productive meeting environments: lobby controls, recording policies, and screen sharing.',
-    category: 'Microsoft Teams',
-    tags: ['Teams', 'Governance', 'Meetings'],
-    author: 'Sayan Ghosh',
-    readTime: 14,
-    views: 890,
-    publishedDate: '2024-12-12',
-    coverImage: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1000&q=80',
-    content: `
-# Overview
-
-Meeting policies in Microsoft Teams control the features available to meeting participants for meetings scheduled by users in your organization.
-
-## Key Controls
-
-* **Lobby settings**: Who can bypass the lobby (Everyone, People in my org, Trusted orgs).
-* **Cloud recording**: Whether the "Start recording" button is available.
-* **Content sharing**: Screen sharing mode (Entire screen, Single window, or Disabled).
-
-## Policy Precedence
-
-Policies are assigned to users. The global (Org-wide default) policy applies unless a custom policy is assigned directly or via a group policy assignment.
-
-## Troubleshooting
-
-If a user cannot record:
-1. Check if their assigned Meeting Policy has "Allow cloud recording" set to On.
-2. Verify they have a valid license (Teams + Stream storage/OneDrive).
-3. Ensure they are not in a region where recording is disabled.
-`
-  },
-  {
-    id: 'TEAMS-002',
-    title: 'Teams External Access & Guest Access: Governance, Controls & Troubleshooting',
-    slug: 'teams-external-guest-access',
-    excerpt: 'Understanding the difference between External (Federation) and Guest access, and how to secure both.',
-    category: 'Microsoft Teams',
-    tags: ['Teams', 'Security', 'Guests'],
-    author: 'Sayan Ghosh',
-    readTime: 15,
-    views: 1100,
-    publishedDate: '2025-01-05',
-    coverImage: 'https://images.unsplash.com/photo-1577563908411-5077b6dc7624?auto=format&fit=crop&w=1000&q=80',
-    content: `
-# Difference Between External and Guest Access
-
-* **External Access (Federation)**: Allows you to chat and call with users in other organizations. They do not have access to your teams or files.
-* **Guest Access**: Allows you to invite people from outside your organization to join a Team. They get a guest account in your directory and can access files and chats within that Team.
-
-## Configuration
-
-Both are controlled in the Teams Admin Center under "Users" -> "External access" and "Guest access".
-
-## Troubleshooting
-
-**Problem**: Guest cannot be invited.
-**Fix**:
-1. Check Entra ID External Collaboration settings.
-2. Ensure "Allow guest access in Teams" is On.
-3. Verify M365 Groups settings allow guests.
-`
-  },
-  {
-    id: 'TEAMS-003',
-    title: 'Teams App Permission Policies: Governance, Security & App Lifecycle',
-    slug: 'teams-app-permissions',
-    excerpt: 'Managing third-party and custom apps in Teams. Allow/Block lists and risk assessment.',
-    category: 'Microsoft Teams',
-    tags: ['Teams', 'Apps', 'Governance'],
-    author: 'Sayan Ghosh',
-    readTime: 14,
-    views: 750,
-    publishedDate: '2025-01-08',
-    coverImage: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1000&q=80',
-    content: `
-# Overview
-
-Teams apps extend the capabilities of the platform. Admins must balance productivity with security.
-
-## Permission Policies
-
-App permission policies control which apps are available to specific users. You can:
-* Allow all apps
-* Allow specific apps and block others
-* Block specific apps and allow others
-
-## Setup Policies
-
-Setup policies control which apps are pinned to the app bar (left rail) and installed automatically for users.
-
-## Best Practices
-
-* Regularly review "Global" org-wide app settings.
-* Use "Org-wide app settings" to disable third-party apps by default if you have strict compliance needs.
-`
-  },
-  {
-    id: 'TEAMS-004',
-    title: 'Teams Voice Administration & Call Routing Essentials',
-    slug: 'teams-voice-admin',
-    excerpt: 'A guide to Teams Phone System: Calling Plans, Direct Routing, Auto Attendants, and Call Queues.',
-    category: 'Microsoft Teams',
-    tags: ['Teams', 'Voice', 'Phone System'],
-    author: 'Sayan Ghosh',
-    readTime: 16,
-    views: 920,
-    publishedDate: '2025-01-12',
-    coverImage: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1000&q=80',
-    series: 'Teams Voice Runbooks',
-    content: `
-# Teams Phone System
-
-Teams Phone allows users to make and receive PSTN calls.
-
-## Connectivity Options
-
-1. **Microsoft Calling Plans**: Microsoft is the carrier. Easiest to set up.
-2. **Direct Routing**: Bring your own SIP trunk/carrier (SBC required).
-3. **Operator Connect**: Carrier integration directly into Teams Admin Center.
-
-## Call Queues & Auto Attendants
-
-* **Auto Attendants**: "Press 1 for Sales, 2 for Support". Uses resource accounts.
-* **Call Queues**: Distributes calls to agents (Round robin, Serial, Longest idle).
-
-## Troubleshooting Missing Dial Pad
-
-If a user is missing the dial pad:
-1. Verify "Phone System" license is assigned.
-2. Ensure Enterprise Voice is enabled (\`Set-CsPhoneNumberAssignment -EnterpriseVoiceEnabled $true\`).
-3. Check if a phone number or Calling Plan is assigned.
-`
-  },
-
-  // --- Intune & Devices ---
-  {
-    id: 'INTUNE-001',
-    title: 'Intune Device Configuration Profiles: Architecture & Best Practices',
-    slug: 'intune-device-config',
-    excerpt: 'Implementing security baselines, hardening configurations, and feature controls for Windows, macOS, and mobile.',
-    category: 'Intune & Devices',
-    tags: ['Intune', 'Configuration', 'Windows'],
-    author: 'Sayan Ghosh',
-    readTime: 15,
-    views: 1800,
-    publishedDate: '2025-01-10',
-    coverImage: 'https://images.unsplash.com/photo-1517430816045-df4b7de8db21?auto=format&fit=crop&w=1000&q=80',
-    content: `
-# Overview
-
-Configuration profiles are the heart of MDM. They push settings to devices, such as Wi-Fi profiles, BitLocker settings, and Kiosk modes.
-
-## Profile Types
-
-* **Settings Catalog**: The modern way to configure settings. Searchable database of all available OS settings.
-* **Templates**: Legacy predefined groups of settings (e.g., "Device restrictions").
-* **Administrative Templates (ADMX)**: Similar to Group Policy objects.
-
-## Conflict Resolution
-
-If two profiles conflict (e.g., one says Allow Camera, one says Block), Intune typically takes the most restrictive option, or reports a "Conflict" state requiring admin intervention.
-
-## Best Practices
-
-* Use **Security Baselines** as a starting point but test thoroughly.
-* Separate user-based settings from device-based settings.
-`
-  },
-  {
-    id: 'INTUNE-002',
-    title: 'Intune Compliance Policies: Architecture, Enforcement & Conditional Access',
-    slug: 'intune-compliance-policies',
-    excerpt: 'Defining device health requirements and enforcing them via Conditional Access.',
-    category: 'Intune & Devices',
-    tags: ['Intune', 'Compliance', 'Security'],
-    author: 'Sayan Ghosh',
-    readTime: 16,
-    views: 1600,
-    publishedDate: '2025-01-14',
-    coverImage: 'https://images.unsplash.com/photo-1563206767-5b1d97289374?auto=format&fit=crop&w=1000&q=80',
-    content: `
-# Compliance Policies
-
-Compliance policies evaluate a device's health. They do NOT change settings (that's configuration profiles). They simply report "Compliant" or "Not Compliant".
-
-## Common Checks
-
-* **BitLocker**: Is the drive encrypted?
-* **OS Version**: Is the OS up to date?
-* **Antivirus**: Is Defender/AV running and updated?
-* **Jailbreak/Root**: For mobile devices.
-
-## Integration with Conditional Access
-
-The real power comes when linking to Entra ID Conditional Access.
-* Policy: "Require device to be marked as compliant".
-* Result: If a device fails compliance (e.g., firewall off), the user cannot access corporate data (Teams/Outlook) until fixed.
-
-## Troubleshooting
-
-**Issue**: Device shows "Not Compliant" but settings look correct.
-**Fix**: Check the "Device compliance" blade for the specific device to see *which* setting failed. Often it is a "System security" setting like a password complexity requirement or grace period.
-`
-  },
-  {
-    id: 'INTUNE-003',
-    title: 'Windows Autopilot: Deployment Models, Architecture & Troubleshooting',
-    slug: 'windows-autopilot-guide',
-    excerpt: 'Zero-touch provisioning explained: User-Driven, Self-Deploying, and Pre-Provisioned modes.',
-    category: 'Intune & Devices',
-    tags: ['Intune', 'Autopilot', 'Deployment'],
-    author: 'Sayan Ghosh',
-    readTime: 16,
-    views: 2100,
-    publishedDate: '2025-01-18',
-    coverImage: 'https://images.unsplash.com/photo-1597733336794-12d05021d510?auto=format&fit=crop&w=1000&q=80',
-    series: 'Intune Enrollment Deep Dive (5 parts)',
-    content: `
-# Windows Autopilot
-
-Autopilot simplifies the OOBE (Out of Box Experience) for users, joining the device to Entra ID and enrolling in Intune automatically.
-
-## Deployment Modes
-
-1. **User-Driven**: User unboxes, connects to Wi-Fi, enters creds. Device configures itself.
-2. **Self-Deploying**: No user interaction required (Kiosks/Digital Signage).
-3. **Pre-Provisioned (White Glove)**: IT or OEM provisions the apps/settings *before* shipping to the user.
-
-## Troubleshooting Error 80070774
-
-This generic error often means "Controller not found" or network/domain reachability issues during Hybrid Join.
-* Ensure the device can reach the domain controller if doing Hybrid Join (VPN required if remote).
-* For Entra ID Join (Cloud native), check internet connectivity and ensuring the user has an Intune license.
-`
-  },
-  {
-    id: 'INTUNE-004',
-    title: 'Intune Application Management: Win32 Apps, Deployment Rings & Troubleshooting',
-    slug: 'intune-app-management',
-    excerpt: 'Packaging and deploying Win32 apps using IntuneWinAppUtil. Detection rules and supersedence.',
-    category: 'Intune & Devices',
-    tags: ['Intune', 'Apps', 'Win32'],
-    author: 'Sayan Ghosh',
-    readTime: 17,
-    views: 1400,
-    publishedDate: '2025-01-22',
-    coverImage: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1000&q=80',
-    content: `
-# Win32 App Management
-
-To deploy .exe or complex .msi installers, you wrap them as \`.intunewin\` files using the Microsoft Win32 Content Prep Tool.
-
-## Key Components
-
-1. **Install Command**: \`setup.exe /quiet\`
-2. **Uninstall Command**: \`msiexec /x {GUID} /q\`
-3. **Detection Rule**: How Intune knows the app installed successfully. Usually a file path or Registry key existence.
-
-## Troubleshooting IME (Intune Management Extension)
-
-Logs are located at: \`C:\\ProgramData\\Microsoft\\IntuneManagementExtension\\Logs\\IntuneManagementExtension.log\`.
-Search for the app GUID or "Win32App" to see download status, hash validation, and execution exit codes.
-`
-  },
-  
-  // --- Entra ID / Identity ---
-  {
-    id: 'ENTRA-001',
-    title: 'Troubleshooting Conditional Access Blocking & Policy Gaps',
-    slug: 'troubleshoot-conditional-access-blocking',
-    excerpt: 'How to use Sign-in logs and What If tool to diagnose why a user is blocked or not prompted for MFA.',
-    category: 'Entra ID / Identity',
-    tags: ['Entra ID', 'Security', 'Conditional Access'],
-    author: 'Sayan Ghosh',
-    readTime: 10,
-    views: 1300,
-    publishedDate: '2025-01-25',
-    content: `
-# Diagnosing Sign-in Issues
-
-When a user reports they are blocked ("You cannot access this right now"), it is usually Conditional Access.
-
-## The "What If" Tool
-
-Located in **Entra Admin Center > Protect & Secure > Conditional Access > What If**.
-Simulate a sign-in with the user's details to see which policies would apply.
-
-## Sign-in Logs
-
-Go to **Users > Sign-in logs**.
-Find the "Failure" entry. Click **Conditional Access** tab to see which policy result was "Failure" (blocking) or "Success" (satisfied).
-
-**Common Blocker**: "Block Legacy Authentication" policy applied to a modern client failing to pass modern tokens.
-`
-  },
-  {
-    id: 'ENTRA-002',
-    title: 'Fixing AADSTS50020 and Guest Access Issues',
-    slug: 'fix-aadsts50020-error',
-    excerpt: 'Deep dive into B2B collaboration errors, tenant switching, and identity provider mismatches.',
-    category: 'Entra ID / Identity',
-    tags: ['Entra ID', 'Guests', 'Errors'],
-    author: 'Sayan Ghosh',
-    readTime: 12,
-    views: 950,
-    publishedDate: '2025-01-26',
-    content: `
-# AADSTS50020
-
-Error: *"User account from identity provider does not exist in tenant..."*
-
-## Causes
-
-1. **Invitation not redeemed**: The user hasn't clicked the link in the invite email.
-2. **Wrong Tenant**: The user is trying to log into their own tenant instead of the resource tenant (check the URL for \`tenantid\` or domain hint).
-3. **Personal vs Work Account**: User is signing in with a personal MSA (outlook.com) when the invite was sent to their Work address, or vice versa.
-
-## Resolution
-
-* Resend the invitation.
-* Ask the user to use an Incognito window to avoid cached credentials.
-* Ensure they use the specific tenant URL: \`https://portal.azure.com/TENANT-DOMAIN-NAME\`.
-`
-  },
-  {
-    id: 'ENTRA-003',
-    title: 'Troubleshooting MFA Loops and Registration Failures',
-    slug: 'troubleshoot-mfa-loops',
-    excerpt: 'Resolving infinite loops during MFA prompts and Authenticator app registration issues.',
-    category: 'Entra ID / Identity',
-    tags: ['Entra ID', 'MFA', 'Troubleshooting'],
-    author: 'Sayan Ghosh',
-    readTime: 8,
-    views: 1150,
-    publishedDate: '2025-01-28',
-    content: `
-# MFA Loops
-
-Infinite loops usually occur due to:
-* **Time sync issues** on the device/server.
-* **Browser cookies** (session token mismatch).
-* **Conditional Access** requiring a re-auth that fails immediately.
-
-## Fixes
-
-1. Clear browser cache/cookies.
-2. Check device time settings.
-3. Use the "Revoke MFA sessions" button in the user's Entra profile to force a clean re-registration.
-4. If using the Authenticator app, ensure battery optimization isn't killing the background push process.
-`
-  },
-  
-  // --- OneDrive ---
-  {
-    id: 'OD-001',
-    title: 'OneDrive Sync Health: Diagnosing Stuck Sync & Processing Changes',
-    slug: 'onedrive-sync-issues',
-    excerpt: 'Advanced troubleshooting for the OneDrive sync client, including reset commands and log analysis.',
-    category: 'OneDrive for Business',
-    tags: ['OneDrive', 'Sync', 'Troubleshooting'],
-    author: 'Sayan Ghosh',
-    readTime: 11,
-    views: 1600,
-    publishedDate: '2025-01-30',
-    content: `
-# OneDrive Sync Issues
-
-"Processing changes" indefinitely is a classic headache.
-
-## Quick Fixes
-
-1. **Check File Names**: Look for unsupported characters (\`" * : < > ? / \\\`) or extremely long paths (> 400 chars).
-2. **Reset OneDrive**:
-   Run \`%localappdata%\\Microsoft\\OneDrive\\onedrive.exe /reset\`
-   This does not redownload data but rebuilds the sync database.
-3. **Check Libraries**: Are they syncing 300,000+ files? Performance degrades significantly at that scale.
-
-## Logs
-
-Collect logs via the OneDrive icon > Help & Settings > Report a problem, or look at \`%localappdata%\\Microsoft\\OneDrive\\logs\`.
-`
-  },
-  
-  // --- SharePoint ---
-  {
-    id: 'SP-001',
-    title: 'SharePoint Permissions Matrix & Troubleshooting Access Denied',
-    slug: 'sharepoint-permissions-troubleshooting',
-    excerpt: 'Understanding inheritance, unique permissions, and the "Check Permissions" tool.',
-    category: 'SharePoint Online',
-    tags: ['SharePoint', 'Permissions', 'Security'],
-    author: 'Sayan Ghosh',
-    readTime: 13,
-    views: 1050,
-    publishedDate: '2025-02-01',
-    content: `
-# Access Denied
-
-When a user should have access but gets denied.
-
-## The "Check Permissions" Tool
-
-Go to **Site Settings > Site Permissions > Check Permissions**. Enter the user's name.
-This tells you *how* they have access (Group membership, direct assignment) or if they have none.
-
-## Limited Access Lockdown Mode
-
-If this site feature is enabled, "Limited Access" users (who maybe only have access to one file) might lose access to application pages or lists. Disable it if granular sharing is breaking.
-`
-  }
-];
-
-// ~55 knowledge base articles, ~25 scripts as of 2025-12-09
-
-export const SCRIPTS: Script[] = [
-  // --- Entra ID Scripts ---
-  {
-    id: 'SC-ID-001',
-    title: 'Bulk User Provisioning from CSV',
-    description: 'Import and create multiple users with license assignment and group membership from CSV file',
-    category: 'Entra ID & Identity',
-    language: 'powershell',
-    downloads: 3200,
-    prerequisites: ['Microsoft.Graph.Users'],
-    difficulty: 'Intermediate',
-    lastUpdated: '2025-01-15',
-    coverImage: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80',
-    code: `<# 
-.SYNOPSIS
-    Bulk User Creation
-.DESCRIPTION
-    Creates users from CSV, assigns password, license, and adds to groups.
-#>
-Import-Csv "users.csv" | ForEach-Object {
-    $password = @{ Password = "ChangeMe123!"; ForceChangePasswordNextSignIn = $true }
-    New-MgUser -DisplayName $_.Name -UserPrincipalName $_.UPN -PasswordProfile $password -AccountEnabled $true -UsageLocation "US"
-}`
   }
 ];
 
