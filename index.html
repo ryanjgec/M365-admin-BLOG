@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MicrosoftAdmin.in | M365 Knowledge Base</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Helvetica', 'Arial', 'sans-serif'],
+              mono: ['Consolas', 'Monaco', 'Courier New', 'monospace'],
+            },
+            colors: {
+              navy: {
+                900: '#0a0f1c', // Deep navy
+                800: '#111827',
+                700: '#1e293b',
+              },
+              neon: {
+                green: '#5EF7A6', // Primary Accent (Bright)
+                blue: '#54A388',  // Secondary Accent (Muted Cyan)
+                dark: '#2E8B57', // Forest Green (Light mode text/border)
+              },
+              card: {
+                bg: 'rgba(255, 255, 255, 0.03)',
+                border: 'rgba(255, 255, 255, 0.08)',
+              }
+            },
+            backgroundImage: {
+              'hero-glow': 'radial-gradient(circle at 50% 0%, rgba(94, 247, 166, 0.15) 0%, transparent 50%)',
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.5s ease-out forwards',
+              'scale-in': 'scaleIn 0.3s ease-out forwards',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              },
+              scaleIn: {
+                '0%': { transform: 'scale(0.95)', opacity: '0' },
+                '100%': { transform: 'scale(1)', opacity: '1' },
+              }
+            }
+          },
+        },
+      };
+    </script>
+    <style>
+      :root {
+        /* Light Mode Grid: Increased opacity +1% */
+        --grid-color: rgba(0, 0, 0, 0.03);
+        /* Light Mode Glass */
+        --glass-bg: rgba(255, 255, 255, 0.7);
+        --glass-border: rgba(0, 0, 0, 0.05);
+        --glass-blur: 12px;
+        --scrollbar-track: #f3f4f6;
+        --scrollbar-thumb: #d1d5db;
+      }
+
+      .dark {
+        /* Dark Mode Grid: Increased opacity +1% */
+        --grid-color: rgba(94, 247, 166, 0.06);
+        /* Dark Mode Glass */
+        --glass-bg: rgba(30, 41, 59, 0.4);
+        --glass-border: rgba(255, 255, 255, 0.1);
+        --scrollbar-track: #0a0f1c;
+        --scrollbar-thumb: #1e293b;
+      }
+
+      body {
+        transition: background-color 0.3s ease, color 0.3s ease;
+        background-attachment: fixed;
+      }
+
+      /* Grid Background Overlay */
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+        background-image: 
+          linear-gradient(var(--grid-color) 1px, transparent 1px),
+          linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+        background-size: 50px 50px;
+        -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+        mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+      }
+
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--scrollbar-track);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--scrollbar-thumb);
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #54A388;
+      }
+
+      /* Glassmorphism Class */
+      .glass-panel {
+        background: var(--glass-bg);
+        backdrop-filter: blur(var(--glass-blur));
+        -webkit-backdrop-filter: blur(var(--glass-blur));
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+
+      /* Link Slide-in Underline Animation */
+      .nav-link {
+        position: relative;
+        text-decoration: none;
+      }
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        transform: scaleX(0);
+        height: 2px;
+        bottom: -2px;
+        left: 0;
+        background-color: #5EF7A6; /* Neon Green */
+        transform-origin: bottom right;
+        transition: transform 0.3s ease-out;
+      }
+      .dark .nav-link::after {
+        background-color: #5EF7A6;
+      }
+      html:not(.dark) .nav-link::after {
+        background-color: #2E8B57;
+      }
+      .nav-link:hover::after {
+        transform: scaleX(1);
+        transform-origin: bottom left;
+      }
+
+      /* Button Ripple/Press Effect */
+      .btn-press {
+        transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s, box-shadow 0.2s;
+      }
+      .btn-press:active {
+        transform: scale(0.96);
+        opacity: 0.9;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.1/",
+    "react": "https://aistudiocdn.com/react@^19.2.1",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.556.0",
+    "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.10.1",
+    "react-syntax-highlighter": "https://esm.sh/react-syntax-highlighter@15.5.0?external=react,react-dom",
+    "react-syntax-highlighter/dist/esm/styles/prism": "https://esm.sh/react-syntax-highlighter@15.5.0/dist/esm/styles/prism?external=react,react-dom",
+    "react-syntax-highlighter/": "https://aistudiocdn.com/react-syntax-highlighter@^16.1.0/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.32.0"
+  }
+}
+</script>
+</head>
+  <body class="bg-gray-50 text-navy-900 dark:bg-navy-900 dark:bg-gradient-to-b dark:from-navy-900 dark:to-[#05080f] dark:text-white min-h-screen">
+    <div id="root"></div>
+  </body>
+</html>
