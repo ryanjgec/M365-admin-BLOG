@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Home, FileText, Terminal, AlertTriangle, Info, Rss, Shield, LayoutGrid, Users } from 'lucide-react';
@@ -34,7 +35,7 @@ export const Sitemap: React.FC = () => {
              <div className="hidden md:block absolute top-6 right-0 w-12 h-px bg-neon-dark/30 dark:bg-neon-green/30"></div>
              
              <div className="inline-block">
-                <Link to="/articles" className="inline-flex items-center justify-end gap-4 group mb-6">
+                <Link to="/knowledge-base" className="inline-flex items-center justify-end gap-4 group mb-6">
                     <span className="font-bold text-xl text-navy-900 dark:text-white group-hover:text-neon-dark dark:group-hover:text-neon-green transition-colors">Knowledge Base</span>
                     <div className="w-12 h-12 bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl flex items-center justify-center group-hover:border-neon-dark dark:group-hover:border-neon-green transition-colors">
                         <FileText className="w-5 h-5 text-gray-500 group-hover:text-neon-dark dark:group-hover:text-neon-green" />
@@ -43,11 +44,11 @@ export const Sitemap: React.FC = () => {
                 {/* Sub-list for KB */}
                 <div className="mr-6 border-r border-gray-200 dark:border-white/10 pr-6 space-y-3">
                     {CATEGORIES.slice(0, 5).map(cat => (
-                        <Link key={cat.id} to={`/articles?category=${cat.name}`} className="block text-sm text-gray-600 dark:text-gray-400 hover:text-neon-dark dark:hover:text-neon-green hover:translate-x-[-4px] transition-all">
+                        <Link key={cat.id} to={`/knowledge-base?category=${cat.name}`} className="block text-sm text-gray-600 dark:text-gray-400 hover:text-neon-dark dark:hover:text-neon-green hover:translate-x-[-4px] transition-all">
                             {cat.name}
                         </Link>
                     ))}
-                    <Link to="/articles" className="block text-sm font-bold text-neon-dark dark:text-neon-green mt-2">View All Categories →</Link>
+                    <Link to="/knowledge-base" className="block text-sm font-bold text-neon-dark dark:text-neon-green mt-2">View All Categories →</Link>
                 </div>
              </div>
           </div>

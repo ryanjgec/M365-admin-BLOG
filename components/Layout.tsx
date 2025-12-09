@@ -36,7 +36,7 @@ export const Header: React.FC<{ theme: string; toggleTheme: () => void }> = ({ t
   }, [location.pathname]);
 
   const navLinks = [
-    { name: 'Knowledge Base', path: '/articles' },
+    { name: 'Knowledge Base', path: '/knowledge-base' },
     { name: 'Scripts', path: '/scripts' },
     { name: 'Troubleshooting', path: '/troubleshooting' },
     { name: 'About', path: '/about' },
@@ -72,7 +72,7 @@ export const Header: React.FC<{ theme: string; toggleTheme: () => void }> = ({ t
                 {CATEGORIES.slice(0, 8).map((cat) => (
                   <Link 
                     key={cat.id} 
-                    to={`/articles?category=${encodeURIComponent(cat.name)}`}
+                    to={`/knowledge-base?category=${encodeURIComponent(cat.name)}`}
                     className="block px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-neon-green/10 hover:text-neon-dark dark:hover:text-neon-green rounded-lg transition-colors"
                   >
                     {cat.name}
@@ -131,7 +131,7 @@ export const Header: React.FC<{ theme: string; toggleTheme: () => void }> = ({ t
             {CATEGORIES.slice(0, 8).map((cat) => (
                <Link
                 key={cat.id}
-                to={`/articles?category=${encodeURIComponent(cat.name)}`}
+                to={`/knowledge-base?category=${encodeURIComponent(cat.name)}`}
                 onClick={() => setIsMobileOpen(false)}
                 className="block text-lg font-medium text-gray-800 dark:text-gray-300 hover:text-neon-dark dark:hover:text-neon-green"
               >
@@ -207,7 +207,7 @@ export const Footer: React.FC = () => {
                 <div className="w-full flex flex-col space-y-2 text-left">
                     <h4 className="text-lg font-semibold tracking-tight mb-2 text-neon-dark dark:text-neon-green">Explore</h4>
                     <ul className="space-y-1 text-sm leading-tight">
-                        <li><Link to="/articles" className="text-gray-600 dark:text-gray-400 hover:text-neon-dark dark:hover:text-neon-green transition-colors block py-0.5">Knowledge Base</Link></li>
+                        <li><Link to="/knowledge-base" className="text-gray-600 dark:text-gray-400 hover:text-neon-dark dark:hover:text-neon-green transition-colors block py-0.5">Knowledge Base</Link></li>
                         <li><Link to="/scripts" className="text-gray-600 dark:text-gray-400 hover:text-neon-dark dark:hover:text-neon-green transition-colors block py-0.5">PowerShell Scripts</Link></li>
                         <li><Link to="/troubleshooting" className="text-gray-600 dark:text-gray-400 hover:text-neon-dark dark:hover:text-neon-green transition-colors block py-0.5">Troubleshooting Hub</Link></li>
                         <li><Link to="/news" className="text-gray-600 dark:text-gray-400 hover:text-neon-dark dark:hover:text-neon-green transition-colors block py-0.5">M365 News Feed</Link></li>
@@ -219,15 +219,15 @@ export const Footer: React.FC = () => {
                 <div className="w-full flex flex-col space-y-2 text-left">
                     <h4 className="text-lg font-semibold tracking-tight mb-2 text-neon-dark dark:text-neon-green">Core Topics</h4>
                     <ul className="space-y-1 text-sm leading-tight">
-                        <li><Link to="/articles?category=Exchange" className="text-gray-600 dark:text-gray-400 hover:text-neon-dark dark:hover:text-neon-green transition-colors block py-0.5">Exchange Online</Link></li>
-                        <li><Link to="/articles?category=Teams" className="text-gray-600 dark:text-gray-400 hover:text-neon-dark dark:hover:text-neon-green transition-colors block py-0.5">Microsoft Teams</Link></li>
-                        <li><Link to="/articles?category=Intune" className="text-gray-600 dark:text-gray-400 hover:text-neon-dark dark:hover:text-neon-green transition-colors block py-0.5">Intune & Devices</Link></li>
-                        <li><Link to="/articles?category=Entra ID" className="text-gray-600 dark:text-gray-400 hover:text-neon-dark dark:hover:text-neon-green transition-colors block py-0.5">Entra ID / Identity</Link></li>
-                        <li><Link to="/articles?category=Security" className="text-gray-600 dark:text-gray-400 hover:text-neon-dark dark:hover:text-neon-green transition-colors block py-0.5">Security & Compliance</Link></li>
-                        <li><Link to="/articles?category=SharePoint" className="text-gray-600 dark:text-gray-400 hover:text-neon-dark dark:hover:text-neon-green transition-colors block py-0.5">SharePoint Online</Link></li>
-                        <li><Link to="/articles?category=OneDrive" className="text-gray-600 dark:text-gray-400 hover:text-neon-dark dark:hover:text-neon-green transition-colors block py-0.5">OneDrive for Business</Link></li>
-                        <li><Link to="/articles?category=Reporting" className="text-gray-600 dark:text-gray-400 hover:text-neon-dark dark:hover:text-neon-green transition-colors block py-0.5">Reporting & Power Platform</Link></li>
-                        <li><Link to="/articles?category=Automation" className="text-gray-600 dark:text-gray-400 hover:text-neon-dark dark:hover:text-neon-green transition-colors block py-0.5">Automation & Scripts</Link></li>
+                        <li><Link to="/knowledge-base?category=Exchange" className="text-gray-600 dark:text-gray-400 hover:text-neon-dark dark:hover:text-neon-green transition-colors block py-0.5">Exchange Online</Link></li>
+                        <li><Link to="/knowledge-base?category=Teams" className="text-gray-600 dark:text-gray-400 hover:text-neon-dark dark:hover:text-neon-green transition-colors block py-0.5">Microsoft Teams</Link></li>
+                        <li><Link to="/knowledge-base?category=Intune" className="text-gray-600 dark:text-gray-400 hover:text-neon-dark dark:hover:text-neon-green transition-colors block py-0.5">Intune & Devices</Link></li>
+                        <li><Link to="/knowledge-base?category=Entra ID" className="text-gray-600 dark:text-gray-400 hover:text-neon-dark dark:hover:text-neon-green transition-colors block py-0.5">Entra ID / Identity</Link></li>
+                        <li><Link to="/knowledge-base?category=Security" className="text-gray-600 dark:text-gray-400 hover:text-neon-dark dark:hover:text-neon-green transition-colors block py-0.5">Security & Compliance</Link></li>
+                        <li><Link to="/knowledge-base?category=SharePoint" className="text-gray-600 dark:text-gray-400 hover:text-neon-dark dark:hover:text-neon-green transition-colors block py-0.5">SharePoint Online</Link></li>
+                        <li><Link to="/knowledge-base?category=OneDrive" className="text-gray-600 dark:text-gray-400 hover:text-neon-dark dark:hover:text-neon-green transition-colors block py-0.5">OneDrive for Business</Link></li>
+                        <li><Link to="/knowledge-base?category=Reporting" className="text-gray-600 dark:text-gray-400 hover:text-neon-dark dark:hover:text-neon-green transition-colors block py-0.5">Reporting & Power Platform</Link></li>
+                        <li><Link to="/knowledge-base?category=Automation" className="text-gray-600 dark:text-gray-400 hover:text-neon-dark dark:hover:text-neon-green transition-colors block py-0.5">Automation & Scripts</Link></li>
                     </ul>
                 </div>
 

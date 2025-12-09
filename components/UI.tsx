@@ -57,6 +57,7 @@ export const Badge: React.FC<{ text: string; color?: string; style?: React.CSSPr
 
 export const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {
   const { summary, isAiGenerated } = useAiSummary(article.content, article.id, article.excerpt);
+  const showSummary = summary && summary.length > 0 && !['tbd', 'coming soon', 'please provide'].some(s => summary.toLowerCase().includes(s));
 
   return (
     <div className="glass-panel rounded-xl overflow-hidden border border-transparent hover:border-neon-dark/40 dark:hover:border-neon-green/40 transition-all duration-300 group flex flex-col h-full hover:scale-[1.02] will-change-transform shadow-lg hover:shadow-2xl hover:shadow-neon-green/10">
@@ -103,6 +104,7 @@ export const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {
         </h3>
         
         {/* Summary Block */}
+        {showSummary ? (
         <div className="relative mb-6 flex-grow">
           <div className={`pl-3 border-l-2 ${isAiGenerated ? 'border-neon-dark dark:border-neon-green' : 'border-gray-300 dark:border-white/20'} transition-colors duration-500`}>
             {isAiGenerated && (
@@ -115,6 +117,9 @@ export const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {
             </p>
           </div>
         </div>
+        ) : (
+            <div className="flex-grow"></div>
+        )}
 
         <div className="flex items-center justify-between pt-4 border-t border-black/5 dark:border-white/5 mt-auto">
           <span className="text-xs text-gray-500">{article.publishedDate}</span>
@@ -245,7 +250,7 @@ export const CategoryCard: React.FC<{ category: Category }> = ({ category }) => 
   const IconComponent = IconMap[category.iconName] || Terminal;
 
   return (
-    <Link to={`/articles?category=${encodeURIComponent(category.name)}`} className="block h-full group">
+    <Link to={`/knowledge-base?category=${encodeURIComponent(category.name)}`} className="block h-full group">
       <div 
         className="h-full bg-white/50 dark:bg-navy-800/50 border border-gray-200 dark:border-white/5 rounded-xl p-6 transition-all duration-300 text-center shadow-sm dark:shadow-none flex flex-col items-center hover:bg-white dark:hover:bg-navy-800 hover:scale-[1.05]"
         style={{ borderColor: 'transparent' }}

@@ -87,7 +87,7 @@ export const ArticleDetail: React.FC = () => {
       <div className="container mx-auto px-6 py-20 text-center min-h-[50vh] flex flex-col items-center justify-center">
         <h2 className="text-3xl font-bold mb-4 text-navy-900 dark:text-white">Article Not Found</h2>
         <p className="text-gray-600 mb-8">The guide you are looking for does not exist or has been moved.</p>
-        <Link to="/articles" className="px-6 py-3 bg-neon-dark dark:bg-neon-green text-white dark:text-navy-900 rounded-lg font-bold">Return to Knowledge Base</Link>
+        <Link to="/knowledge-base" className="px-6 py-3 bg-neon-dark dark:bg-neon-green text-white dark:text-navy-900 rounded-lg font-bold">Return to Knowledge Base</Link>
       </div>
     );
   }
@@ -185,9 +185,9 @@ export const ArticleDetail: React.FC = () => {
              <div className="flex items-center space-x-2 text-sm text-gray-500 overflow-x-auto whitespace-nowrap pb-2">
                 <Link to="/" className="hover:text-navy-900 dark:hover:text-white">Home</Link>
                 <ChevronLeft size={12} className="rotate-180 flex-shrink-0" />
-                <Link to="/articles" className="hover:text-navy-900 dark:hover:text-white">Knowledge Base</Link>
+                <Link to="/knowledge-base" className="hover:text-navy-900 dark:hover:text-white">Knowledge Base</Link>
                 <ChevronLeft size={12} className="rotate-180 flex-shrink-0" />
-                <Link to={`/articles?category=${encodeURIComponent(article.category)}`} className="hover:text-navy-900 dark:hover:text-white">{article.category}</Link>
+                <Link to={`/knowledge-base?category=${encodeURIComponent(article.category)}`} className="hover:text-navy-900 dark:hover:text-white">{article.category}</Link>
                 <ChevronLeft size={12} className="rotate-180 flex-shrink-0" />
                 <span className="text-neon-dark dark:text-neon-green truncate max-w-[200px] font-medium">{article.title}</span>
              </div>
@@ -277,7 +277,7 @@ export const ArticleDetail: React.FC = () => {
                         ))}
                     </div>
                     
-                    <Link to="/articles" className="inline-flex items-center px-6 py-3 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-navy-900 dark:text-white rounded-lg font-bold hover:bg-gray-50 dark:hover:bg-white/10 transition-colors">
+                    <Link to="/knowledge-base" className="inline-flex items-center px-6 py-3 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-navy-900 dark:text-white rounded-lg font-bold hover:bg-gray-50 dark:hover:bg-white/10 transition-colors">
                         <ChevronLeft size={20} className="mr-2" /> Back to Knowledge Base
                     </Link>
                 </div>

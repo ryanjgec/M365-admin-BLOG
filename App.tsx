@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './components/Layout';
@@ -19,7 +20,7 @@ const App: React.FC = () => {
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/articles" element={<KnowledgeBase />} />
+          <Route path="/knowledge-base" element={<KnowledgeBase />} />
           <Route path="/kb/:slug" element={<ArticleDetail />} />
           <Route path="/scripts" element={<Scripts />} />
           <Route path="/troubleshooting" element={<Troubleshooting />} />

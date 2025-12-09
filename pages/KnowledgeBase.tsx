@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react';
+
+import React, { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Search, Filter, ChevronLeft, ChevronRight, Layers } from 'lucide-react';
 import { ArticleCard } from '../components/UI';
@@ -8,11 +9,17 @@ import { SEO } from '../components/Layout';
 const ITEMS_PER_PAGE = 12;
 
 export const KnowledgeBase: React.FC = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const initialCategory = searchParams.get('category') || 'All';
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [currentPage, setCurrentPage] = useState(1);
+
+  // Sync state with URL params if they change externally (e.g. back button)
+  useEffect(() => {
+    const cat = searchParams.get('category') || 'All';
+    setSelectedCategory(cat);
+  }, [searchParams]);
 
   // Extract Series
   const seriesList = useMemo(() => {
@@ -44,6 +51,7 @@ export const KnowledgeBase: React.FC = () => {
   const handleCategoryChange = (cat: string) => {
     setSelectedCategory(cat);
     setCurrentPage(1); // Reset to first page
+    setSearchParams(cat === 'All' ? {} : { category: cat });
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {

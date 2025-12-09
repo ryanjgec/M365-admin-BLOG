@@ -79,7 +79,7 @@ export const Home: React.FC = () => {
             </div>
             
             <div className="flex flex-wrap gap-4 animate-fade-in" style={{ animationDelay: '0.3s' }}>
-              <Button to="/articles">Browse Knowledge Base</Button>
+              <Button to="/knowledge-base">Browse Knowledge Base</Button>
               <Button variant="outline" to="/scripts">Get PowerShell Scripts</Button>
             </div>
           </div>
@@ -98,7 +98,7 @@ export const Home: React.FC = () => {
             title="Knowledge Base"
             description="Deep-dive tutorials and architecture guides."
             icon={<BookOpen size={24} />}
-            to="/articles"
+            to="/knowledge-base"
           />
           <SpotlightCard 
             title="PowerShell Scripts"
@@ -123,7 +123,7 @@ export const Home: React.FC = () => {
             <h2 className="text-2xl font-bold text-navy-900 dark:text-white flex items-center gap-2">
                 <FileText className="text-neon-blue" size={24} /> Latest from the Knowledge Base
             </h2>
-            <Link to="/articles" className="text-sm font-bold text-neon-dark dark:text-neon-green hover:underline flex items-center">
+            <Link to="/knowledge-base" className="text-sm font-bold text-neon-dark dark:text-neon-green hover:underline flex items-center">
                 View All <ChevronRight size={16} />
             </Link>
         </div>
